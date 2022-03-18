@@ -10,12 +10,12 @@ import (
 
 // Override is an override of default value
 type Override struct {
-	value interface{}
+	value any
 	name  string
 }
 
 // NewOverride create a default override value
-func NewOverride(name string, value interface{}) Override {
+func NewOverride(name string, value any) Override {
 	return Override{
 		name:  name,
 		value: value,
@@ -24,7 +24,7 @@ func NewOverride(name string, value interface{}) Override {
 
 // Flag describe a flag
 type Flag struct {
-	value     interface{}
+	value     any
 	prefix    string
 	docPrefix string
 	name      string
@@ -46,7 +46,7 @@ func New(prefix, docPrefix, name string) Flag {
 }
 
 // Default defines default value of Flag
-func (f Flag) Default(value interface{}, overrides []Override) Flag {
+func (f Flag) Default(value any, overrides []Override) Flag {
 	for _, override := range overrides {
 		if strings.EqualFold(f.name, override.name) {
 			f.value = override.value
@@ -60,7 +60,7 @@ func (f Flag) Default(value interface{}, overrides []Override) Flag {
 }
 
 // Label defines label of Flag
-func (f Flag) Label(format string, a ...interface{}) Flag {
+func (f Flag) Label(format string, a ...any) Flag {
 	f.label = fmt.Sprintf(format, a...)
 
 	return f

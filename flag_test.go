@@ -50,7 +50,7 @@ func TestToString(t *testing.T) {
 		prefix       string
 		docPrefix    string
 		name         string
-		defaultValue interface{}
+		defaultValue any
 		label        string
 		want         string
 	}{
@@ -117,7 +117,7 @@ func TestToInt(t *testing.T) {
 		prefix       string
 		docPrefix    string
 		name         string
-		defaultValue interface{}
+		defaultValue any
 		label        string
 		want         string
 	}{
@@ -194,7 +194,7 @@ func TestToInt64(t *testing.T) {
 		prefix       string
 		docPrefix    string
 		name         string
-		defaultValue interface{}
+		defaultValue any
 		label        string
 		want         string
 	}{
@@ -271,7 +271,7 @@ func TestToUint(t *testing.T) {
 		prefix       string
 		docPrefix    string
 		name         string
-		defaultValue interface{}
+		defaultValue any
 		label        string
 		want         string
 	}{
@@ -366,7 +366,7 @@ func TestToUint64(t *testing.T) {
 		prefix       string
 		docPrefix    string
 		name         string
-		defaultValue interface{}
+		defaultValue any
 		label        string
 		want         string
 	}{
@@ -461,7 +461,7 @@ func TestToFloat64(t *testing.T) {
 		prefix       string
 		docPrefix    string
 		name         string
-		defaultValue interface{}
+		defaultValue any
 		label        string
 		want         string
 	}{
@@ -538,7 +538,7 @@ func TestToBool(t *testing.T) {
 		prefix       string
 		docPrefix    string
 		name         string
-		defaultValue interface{}
+		defaultValue any
 		label        string
 		want         string
 	}{
