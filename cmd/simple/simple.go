@@ -18,8 +18,8 @@ import (
 func main() {
 	fs := flag.NewFlagSet("my-cli", flag.ExitOnError)
 
-	address := flags.New("exemple", "server", "Address").Default("", nil).Label("Listen address").ToString(fs)
-	port := flags.New("exemple", "server", "Port").Default(1080, nil).Label("Listen port (0 to disable)").ToUint(fs)
+	address := flags.String(fs, "exemple", "server", "Address", "Listen address", "", nil)
+	port := flags.Uint(fs, "exemple", "server", "Port", "Listen port (0 to disable)", 1080, nil)
 
 	if err := fs.Parse(os.Args[1:]); err != nil {
 		log.Fatal(err)
