@@ -8,8 +8,7 @@ import (
 )
 
 func TestToString(t *testing.T) {
-	cases := []struct {
-		intention    string
+	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
 		name         string
@@ -18,8 +17,7 @@ func TestToString(t *testing.T) {
 		overrides    []Override
 		want         string
 	}{
-		{
-			"simple",
+		"simple": {
 			"",
 			"cli",
 			"test",
@@ -28,8 +26,7 @@ func TestToString(t *testing.T) {
 			nil,
 			"Usage of ToString:\n  -test string\n    \t[cli] Test flag {TO_STRING_TEST}\n",
 		},
-		{
-			"with prefix",
+		"with prefix": {
 			"context",
 			"cli",
 			"test",
@@ -38,8 +35,7 @@ func TestToString(t *testing.T) {
 			nil,
 			"Usage of ToString:\n  -contextTest string\n    \t[context] Test flag {TO_STRING_CONTEXT_TEST} (default \"default\")\n",
 		},
-		{
-			"env",
+		"env": {
 			"",
 			"cli",
 			"value",
@@ -48,8 +44,7 @@ func TestToString(t *testing.T) {
 			nil,
 			"Usage of ToString:\n  -value string\n    \t[cli] Test flag {TO_STRING_VALUE} (default \"test\")\n",
 		},
-		{
-			"override",
+		"override": {
 			"",
 			"cli",
 			"overriden",
@@ -64,8 +59,8 @@ func TestToString(t *testing.T) {
 
 	os.Setenv("TO_STRING_VALUE", "test")
 
-	for _, tc := range cases {
-		t.Run(tc.intention, func(t *testing.T) {
+	for intention, tc := range cases {
+		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("ToString", flag.ContinueOnError)
 			String(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, tc.overrides)
 
@@ -81,8 +76,7 @@ func TestToString(t *testing.T) {
 }
 
 func TestToInt(t *testing.T) {
-	cases := []struct {
-		intention    string
+	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
 		name         string
@@ -90,8 +84,7 @@ func TestToInt(t *testing.T) {
 		label        string
 		want         string
 	}{
-		{
-			"simple",
+		"simple": {
 			"",
 			"cli",
 			"test",
@@ -99,8 +92,7 @@ func TestToInt(t *testing.T) {
 			"Test flag",
 			"Usage of ToInt:\n  -test int\n    \t[cli] Test flag {TO_INT_TEST}\n",
 		},
-		{
-			"with prefix",
+		"with prefix": {
 			"context",
 			"cli",
 			"test",
@@ -108,8 +100,7 @@ func TestToInt(t *testing.T) {
 			"Test flag",
 			"Usage of ToInt:\n  -contextTest int\n    \t[context] Test flag {TO_INT_CONTEXT_TEST} (default 8000)\n",
 		},
-		{
-			"env",
+		"env": {
 			"",
 			"cli",
 			"value",
@@ -117,8 +108,7 @@ func TestToInt(t *testing.T) {
 			"Test flag",
 			"Usage of ToInt:\n  -value int\n    \t[cli] Test flag {TO_INT_VALUE} (default 6000)\n",
 		},
-		{
-			"invalid env",
+		"invalid env": {
 			"",
 			"cli",
 			"invalidValue",
@@ -131,8 +121,8 @@ func TestToInt(t *testing.T) {
 	os.Setenv("TO_INT_VALUE", "6000")
 	os.Setenv("TO_INT_INVALID_VALUE", "test")
 
-	for _, tc := range cases {
-		t.Run(tc.intention, func(t *testing.T) {
+	for intention, tc := range cases {
+		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("ToInt", flag.ContinueOnError)
 			Int(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
@@ -148,8 +138,7 @@ func TestToInt(t *testing.T) {
 }
 
 func TestToInt64(t *testing.T) {
-	cases := []struct {
-		intention    string
+	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
 		name         string
@@ -157,8 +146,7 @@ func TestToInt64(t *testing.T) {
 		label        string
 		want         string
 	}{
-		{
-			"simple",
+		"simple": {
 			"",
 			"cli",
 			"test",
@@ -166,8 +154,7 @@ func TestToInt64(t *testing.T) {
 			"Test flag",
 			"Usage of ToInt64:\n  -test int\n    \t[cli] Test flag {TO_INT64_TEST}\n",
 		},
-		{
-			"with prefix",
+		"with prefix": {
 			"context",
 			"cli",
 			"test",
@@ -175,8 +162,7 @@ func TestToInt64(t *testing.T) {
 			"Test flag",
 			"Usage of ToInt64:\n  -contextTest int\n    \t[context] Test flag {TO_INT64_CONTEXT_TEST} (default 8000)\n",
 		},
-		{
-			"env",
+		"env": {
 			"",
 			"cli",
 			"value",
@@ -184,8 +170,7 @@ func TestToInt64(t *testing.T) {
 			"Test flag",
 			"Usage of ToInt64:\n  -value int\n    \t[cli] Test flag {TO_INT64_VALUE} (default 6000)\n",
 		},
-		{
-			"invalid env",
+		"invalid env": {
 			"",
 			"cli",
 			"invalidValue",
@@ -198,8 +183,8 @@ func TestToInt64(t *testing.T) {
 	os.Setenv("TO_INT64_VALUE", "6000")
 	os.Setenv("TO_INT64_INVALID_VALUE", "test")
 
-	for _, tc := range cases {
-		t.Run(tc.intention, func(t *testing.T) {
+	for intention, tc := range cases {
+		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("ToInt64", flag.ContinueOnError)
 			Int64(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
@@ -215,8 +200,7 @@ func TestToInt64(t *testing.T) {
 }
 
 func TestToUint(t *testing.T) {
-	cases := []struct {
-		intention    string
+	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
 		name         string
@@ -224,8 +208,7 @@ func TestToUint(t *testing.T) {
 		label        string
 		want         string
 	}{
-		{
-			"simple",
+		"simple": {
 			"",
 			"cli",
 			"test",
@@ -233,8 +216,7 @@ func TestToUint(t *testing.T) {
 			"Test flag",
 			"Usage of ToUint:\n  -test uint\n    \t[cli] Test flag {TO_UINT_TEST}\n",
 		},
-		{
-			"uint",
+		"uint": {
 			"",
 			"cli",
 			"test",
@@ -242,8 +224,7 @@ func TestToUint(t *testing.T) {
 			"Test flag",
 			"Usage of ToUint:\n  -test uint\n    \t[cli] Test flag {TO_UINT_TEST} (default 10)\n",
 		},
-		{
-			"with prefix",
+		"with prefix": {
 			"context",
 			"cli",
 			"test",
@@ -251,8 +232,7 @@ func TestToUint(t *testing.T) {
 			"Test flag",
 			"Usage of ToUint:\n  -contextTest uint\n    \t[context] Test flag {TO_UINT_CONTEXT_TEST} (default 8000)\n",
 		},
-		{
-			"env",
+		"env": {
 			"",
 			"cli",
 			"value",
@@ -260,8 +240,7 @@ func TestToUint(t *testing.T) {
 			"Test flag",
 			"Usage of ToUint:\n  -value uint\n    \t[cli] Test flag {TO_UINT_VALUE} (default 6000)\n",
 		},
-		{
-			"invalid env",
+		"invalid env": {
 			"",
 			"cli",
 			"invalidValue",
@@ -274,8 +253,8 @@ func TestToUint(t *testing.T) {
 	os.Setenv("TO_UINT_VALUE", "6000")
 	os.Setenv("TO_UINT_INVALID_VALUE", "-6000")
 
-	for _, tc := range cases {
-		t.Run(tc.intention, func(t *testing.T) {
+	for intention, tc := range cases {
+		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("ToUint", flag.ContinueOnError)
 			Uint(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
@@ -291,8 +270,7 @@ func TestToUint(t *testing.T) {
 }
 
 func TestToUint64(t *testing.T) {
-	cases := []struct {
-		intention    string
+	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
 		name         string
@@ -300,8 +278,7 @@ func TestToUint64(t *testing.T) {
 		label        string
 		want         string
 	}{
-		{
-			"simple",
+		"simple": {
 			"",
 			"cli",
 			"test",
@@ -309,8 +286,7 @@ func TestToUint64(t *testing.T) {
 			"Test flag",
 			"Usage of ToUint64:\n  -test uint\n    \t[cli] Test flag {TO_UINT64_TEST}\n",
 		},
-		{
-			"uint",
+		"uint": {
 			"",
 			"cli",
 			"test",
@@ -318,8 +294,7 @@ func TestToUint64(t *testing.T) {
 			"Test flag",
 			"Usage of ToUint64:\n  -test uint\n    \t[cli] Test flag {TO_UINT64_TEST} (default 10)\n",
 		},
-		{
-			"with prefix",
+		"with prefix": {
 			"context",
 			"cli",
 			"test",
@@ -327,8 +302,7 @@ func TestToUint64(t *testing.T) {
 			"Test flag",
 			"Usage of ToUint64:\n  -contextTest uint\n    \t[context] Test flag {TO_UINT64_CONTEXT_TEST} (default 8000)\n",
 		},
-		{
-			"env",
+		"env": {
 			"",
 			"cli",
 			"value",
@@ -336,8 +310,7 @@ func TestToUint64(t *testing.T) {
 			"Test flag",
 			"Usage of ToUint64:\n  -value uint\n    \t[cli] Test flag {TO_UINT64_VALUE} (default 6000)\n",
 		},
-		{
-			"invalid env",
+		"invalid env": {
 			"",
 			"cli",
 			"invalidValue",
@@ -350,8 +323,8 @@ func TestToUint64(t *testing.T) {
 	os.Setenv("TO_UINT64_VALUE", "6000")
 	os.Setenv("TO_UINT64_INVALID_VALUE", "-6000")
 
-	for _, tc := range cases {
-		t.Run(tc.intention, func(t *testing.T) {
+	for intention, tc := range cases {
+		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("ToUint64", flag.ContinueOnError)
 			Uint64(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
@@ -367,8 +340,7 @@ func TestToUint64(t *testing.T) {
 }
 
 func TestToFloat64(t *testing.T) {
-	cases := []struct {
-		intention    string
+	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
 		name         string
@@ -376,8 +348,7 @@ func TestToFloat64(t *testing.T) {
 		label        string
 		want         string
 	}{
-		{
-			"simple",
+		"simple": {
 			"",
 			"cli",
 			"test",
@@ -385,8 +356,7 @@ func TestToFloat64(t *testing.T) {
 			"Test flag",
 			"Usage of ToFloat64:\n  -test float\n    \t[cli] Test flag {TO_FLOAT64_TEST}\n",
 		},
-		{
-			"with prefix",
+		"with prefix": {
 			"context",
 			"cli",
 			"test",
@@ -394,8 +364,7 @@ func TestToFloat64(t *testing.T) {
 			"Test flag",
 			"Usage of ToFloat64:\n  -contextTest float\n    \t[context] Test flag {TO_FLOAT64_CONTEXT_TEST} (default 12.34)\n",
 		},
-		{
-			"env",
+		"env": {
 			"",
 			"cli",
 			"value",
@@ -403,8 +372,7 @@ func TestToFloat64(t *testing.T) {
 			"Test flag",
 			"Usage of ToFloat64:\n  -value float\n    \t[cli] Test flag {TO_FLOAT64_VALUE} (default 34.56)\n",
 		},
-		{
-			"invalid env",
+		"invalid env": {
 			"",
 			"cli",
 			"invalidValue",
@@ -417,8 +385,8 @@ func TestToFloat64(t *testing.T) {
 	os.Setenv("TO_FLOAT64_VALUE", "34.56")
 	os.Setenv("TO_FLOAT64_INVALID_VALUE", "12.34.56")
 
-	for _, tc := range cases {
-		t.Run(tc.intention, func(t *testing.T) {
+	for intention, tc := range cases {
+		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("ToFloat64", flag.ContinueOnError)
 			Float64(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
@@ -434,8 +402,7 @@ func TestToFloat64(t *testing.T) {
 }
 
 func TestToBool(t *testing.T) {
-	cases := []struct {
-		intention    string
+	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
 		name         string
@@ -443,8 +410,7 @@ func TestToBool(t *testing.T) {
 		label        string
 		want         string
 	}{
-		{
-			"simple",
+		"simple": {
 			"",
 			"cli",
 			"test",
@@ -452,8 +418,7 @@ func TestToBool(t *testing.T) {
 			"Test flag",
 			"Usage of ToBool:\n  -test\n    \t[cli] Test flag {TO_BOOL_TEST}\n",
 		},
-		{
-			"with prefix",
+		"with prefix": {
 			"context",
 			"cli",
 			"test",
@@ -461,8 +426,7 @@ func TestToBool(t *testing.T) {
 			"Test flag",
 			"Usage of ToBool:\n  -contextTest\n    \t[context] Test flag {TO_BOOL_CONTEXT_TEST} (default true)\n",
 		},
-		{
-			"env",
+		"env": {
 			"",
 			"cli",
 			"value",
@@ -470,8 +434,7 @@ func TestToBool(t *testing.T) {
 			"Test flag",
 			"Usage of ToBool:\n  -value\n    \t[cli] Test flag {TO_BOOL_VALUE}\n",
 		},
-		{
-			"invalid env",
+		"invalid env": {
 			"",
 			"cli",
 			"invalidValue",
@@ -484,8 +447,8 @@ func TestToBool(t *testing.T) {
 	os.Setenv("TO_BOOL_VALUE", "false")
 	os.Setenv("TO_BOOL_INVALID_VALUE", "test")
 
-	for _, tc := range cases {
-		t.Run(tc.intention, func(t *testing.T) {
+	for intention, tc := range cases {
+		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("ToBool", flag.ContinueOnError)
 			Bool(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
