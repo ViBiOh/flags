@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Override is an override of default value
@@ -62,6 +63,12 @@ func Float64(fs *flag.FlagSet, prefix, docPrefix, name, label string, value floa
 func Bool(fs *flag.FlagSet, prefix, docPrefix, name, label string, value bool, overrides []Override) *bool {
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 	return fs.Bool(FirstLowerCase(flagName), LookupEnvBool(name, envName, value, overrides), formatLabel(prefix, docPrefix, label, envName))
+}
+
+// Duration creates a duration flag
+func Duration(fs *flag.FlagSet, prefix, docPrefix, name, label string, value time.Duration, overrides []Override) *time.Duration {
+	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+	return fs.Duration(FirstLowerCase(flagName), LookupEnvDuration(name, envName, value, overrides), formatLabel(prefix, docPrefix, label, envName))
 }
 
 func getNameAndEnv(fs *flag.FlagSet, prefix, name string) (string, string) {
@@ -158,6 +165,18 @@ func LookupEnvFloat64(name, envName string, value float64, overrides []Override)
 func LookupEnvBool(name, envName string, value bool, overrides []Override) bool {
 	if val, ok := os.LookupEnv(envName); ok {
 		boolBal, err := strconv.ParseBool(val)
+		if err == nil {
+			return boolBal
+		}
+	}
+
+	return getOverridenValue(overrides, name, value)
+}
+
+// LookupEnvDuration search for given key in environment as time.Duration
+func LookupEnvDuration(name, envName string, value time.Duration, overrides []Override) time.Duration {
+	if val, ok := os.LookupEnv(envName); ok {
+		boolBal, err := time.ParseDuration(val)
 		if err == nil {
 			return boolBal
 		}

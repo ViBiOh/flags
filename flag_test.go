@@ -5,9 +5,10 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 )
 
-func TestToString(t *testing.T) {
+func TestString(t *testing.T) {
 	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
@@ -24,7 +25,7 @@ func TestToString(t *testing.T) {
 			"",
 			"Test flag",
 			nil,
-			"Usage of ToString:\n  -test string\n    \t[cli] Test flag {TO_STRING_TEST}\n",
+			"Usage of String:\n  -test string\n    \t[cli] Test flag {STRING_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -33,7 +34,7 @@ func TestToString(t *testing.T) {
 			"default",
 			"Test flag",
 			nil,
-			"Usage of ToString:\n  -contextTest string\n    \t[context] Test flag {TO_STRING_CONTEXT_TEST} (default \"default\")\n",
+			"Usage of String:\n  -contextTest string\n    \t[context] Test flag {STRING_CONTEXT_TEST} (default \"default\")\n",
 		},
 		"env": {
 			"",
@@ -42,7 +43,7 @@ func TestToString(t *testing.T) {
 			"default",
 			"Test flag",
 			nil,
-			"Usage of ToString:\n  -value string\n    \t[cli] Test flag {TO_STRING_VALUE} (default \"test\")\n",
+			"Usage of String:\n  -value string\n    \t[cli] Test flag {STRING_VALUE} (default \"test\")\n",
 		},
 		"override": {
 			"",
@@ -53,15 +54,15 @@ func TestToString(t *testing.T) {
 			[]Override{
 				NewOverride("overriden", "override"),
 			},
-			"Usage of ToString:\n  -overriden string\n    \t[cli] Test override {TO_STRING_OVERRIDEN} (default \"override\")\n",
+			"Usage of String:\n  -overriden string\n    \t[cli] Test override {STRING_OVERRIDEN} (default \"override\")\n",
 		},
 	}
 
-	os.Setenv("TO_STRING_VALUE", "test")
+	os.Setenv("STRING_VALUE", "test")
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("ToString", flag.ContinueOnError)
+			fs := flag.NewFlagSet("String", flag.ContinueOnError)
 			String(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, tc.overrides)
 
 			var writer strings.Builder
@@ -69,13 +70,13 @@ func TestToString(t *testing.T) {
 			fs.Usage()
 
 			if result := writer.String(); result != tc.want {
-				t.Errorf("ToString() = `%s`, want `%s`", result, tc.want)
+				t.Errorf("String() = `%s`, want `%s`", result, tc.want)
 			}
 		})
 	}
 }
 
-func TestToInt(t *testing.T) {
+func TestInt(t *testing.T) {
 	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
@@ -90,7 +91,7 @@ func TestToInt(t *testing.T) {
 			"test",
 			0,
 			"Test flag",
-			"Usage of ToInt:\n  -test int\n    \t[cli] Test flag {TO_INT_TEST}\n",
+			"Usage of Int:\n  -test int\n    \t[cli] Test flag {INT_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -98,7 +99,7 @@ func TestToInt(t *testing.T) {
 			"test",
 			8000,
 			"Test flag",
-			"Usage of ToInt:\n  -contextTest int\n    \t[context] Test flag {TO_INT_CONTEXT_TEST} (default 8000)\n",
+			"Usage of Int:\n  -contextTest int\n    \t[context] Test flag {INT_CONTEXT_TEST} (default 8000)\n",
 		},
 		"env": {
 			"",
@@ -106,7 +107,7 @@ func TestToInt(t *testing.T) {
 			"value",
 			8000,
 			"Test flag",
-			"Usage of ToInt:\n  -value int\n    \t[cli] Test flag {TO_INT_VALUE} (default 6000)\n",
+			"Usage of Int:\n  -value int\n    \t[cli] Test flag {INT_VALUE} (default 6000)\n",
 		},
 		"invalid env": {
 			"",
@@ -114,16 +115,16 @@ func TestToInt(t *testing.T) {
 			"invalidValue",
 			8000,
 			"Test flag",
-			"Usage of ToInt:\n  -invalidValue int\n    \t[cli] Test flag {TO_INT_INVALID_VALUE} (default 8000)\n",
+			"Usage of Int:\n  -invalidValue int\n    \t[cli] Test flag {INT_INVALID_VALUE} (default 8000)\n",
 		},
 	}
 
-	os.Setenv("TO_INT_VALUE", "6000")
-	os.Setenv("TO_INT_INVALID_VALUE", "test")
+	os.Setenv("INT_VALUE", "6000")
+	os.Setenv("INT_INVALID_VALUE", "test")
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("ToInt", flag.ContinueOnError)
+			fs := flag.NewFlagSet("Int", flag.ContinueOnError)
 			Int(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
@@ -131,13 +132,13 @@ func TestToInt(t *testing.T) {
 			fs.Usage()
 
 			if result := writer.String(); result != tc.want {
-				t.Errorf("ToInt() = `%s`, want `%s`", result, tc.want)
+				t.Errorf("Int() = `%s`, want `%s`", result, tc.want)
 			}
 		})
 	}
 }
 
-func TestToInt64(t *testing.T) {
+func TestInt64(t *testing.T) {
 	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
@@ -152,7 +153,7 @@ func TestToInt64(t *testing.T) {
 			"test",
 			0,
 			"Test flag",
-			"Usage of ToInt64:\n  -test int\n    \t[cli] Test flag {TO_INT64_TEST}\n",
+			"Usage of Int64:\n  -test int\n    \t[cli] Test flag {INT64_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -160,7 +161,7 @@ func TestToInt64(t *testing.T) {
 			"test",
 			8000,
 			"Test flag",
-			"Usage of ToInt64:\n  -contextTest int\n    \t[context] Test flag {TO_INT64_CONTEXT_TEST} (default 8000)\n",
+			"Usage of Int64:\n  -contextTest int\n    \t[context] Test flag {INT64_CONTEXT_TEST} (default 8000)\n",
 		},
 		"env": {
 			"",
@@ -168,7 +169,7 @@ func TestToInt64(t *testing.T) {
 			"value",
 			8000,
 			"Test flag",
-			"Usage of ToInt64:\n  -value int\n    \t[cli] Test flag {TO_INT64_VALUE} (default 6000)\n",
+			"Usage of Int64:\n  -value int\n    \t[cli] Test flag {INT64_VALUE} (default 6000)\n",
 		},
 		"invalid env": {
 			"",
@@ -176,16 +177,16 @@ func TestToInt64(t *testing.T) {
 			"invalidValue",
 			8000,
 			"Test flag",
-			"Usage of ToInt64:\n  -invalidValue int\n    \t[cli] Test flag {TO_INT64_INVALID_VALUE} (default 8000)\n",
+			"Usage of Int64:\n  -invalidValue int\n    \t[cli] Test flag {INT64_INVALID_VALUE} (default 8000)\n",
 		},
 	}
 
-	os.Setenv("TO_INT64_VALUE", "6000")
-	os.Setenv("TO_INT64_INVALID_VALUE", "test")
+	os.Setenv("INT64_VALUE", "6000")
+	os.Setenv("INT64_INVALID_VALUE", "test")
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("ToInt64", flag.ContinueOnError)
+			fs := flag.NewFlagSet("Int64", flag.ContinueOnError)
 			Int64(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
@@ -193,13 +194,13 @@ func TestToInt64(t *testing.T) {
 			fs.Usage()
 
 			if result := writer.String(); result != tc.want {
-				t.Errorf("ToInt64() = `%s`, want `%s`", result, tc.want)
+				t.Errorf("Int64() = `%s`, want `%s`", result, tc.want)
 			}
 		})
 	}
 }
 
-func TestToUint(t *testing.T) {
+func TestUint(t *testing.T) {
 	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
@@ -214,7 +215,7 @@ func TestToUint(t *testing.T) {
 			"test",
 			0,
 			"Test flag",
-			"Usage of ToUint:\n  -test uint\n    \t[cli] Test flag {TO_UINT_TEST}\n",
+			"Usage of Uint:\n  -test uint\n    \t[cli] Test flag {UINT_TEST}\n",
 		},
 		"uint": {
 			"",
@@ -222,7 +223,7 @@ func TestToUint(t *testing.T) {
 			"test",
 			uint(10),
 			"Test flag",
-			"Usage of ToUint:\n  -test uint\n    \t[cli] Test flag {TO_UINT_TEST} (default 10)\n",
+			"Usage of Uint:\n  -test uint\n    \t[cli] Test flag {UINT_TEST} (default 10)\n",
 		},
 		"with prefix": {
 			"context",
@@ -230,7 +231,7 @@ func TestToUint(t *testing.T) {
 			"test",
 			8000,
 			"Test flag",
-			"Usage of ToUint:\n  -contextTest uint\n    \t[context] Test flag {TO_UINT_CONTEXT_TEST} (default 8000)\n",
+			"Usage of Uint:\n  -contextTest uint\n    \t[context] Test flag {UINT_CONTEXT_TEST} (default 8000)\n",
 		},
 		"env": {
 			"",
@@ -238,7 +239,7 @@ func TestToUint(t *testing.T) {
 			"value",
 			8000,
 			"Test flag",
-			"Usage of ToUint:\n  -value uint\n    \t[cli] Test flag {TO_UINT_VALUE} (default 6000)\n",
+			"Usage of Uint:\n  -value uint\n    \t[cli] Test flag {UINT_VALUE} (default 6000)\n",
 		},
 		"invalid env": {
 			"",
@@ -246,16 +247,16 @@ func TestToUint(t *testing.T) {
 			"invalidValue",
 			8000,
 			"Test flag",
-			"Usage of ToUint:\n  -invalidValue uint\n    \t[cli] Test flag {TO_UINT_INVALID_VALUE} (default 8000)\n",
+			"Usage of Uint:\n  -invalidValue uint\n    \t[cli] Test flag {UINT_INVALID_VALUE} (default 8000)\n",
 		},
 	}
 
-	os.Setenv("TO_UINT_VALUE", "6000")
-	os.Setenv("TO_UINT_INVALID_VALUE", "-6000")
+	os.Setenv("UINT_VALUE", "6000")
+	os.Setenv("UINT_INVALID_VALUE", "-6000")
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("ToUint", flag.ContinueOnError)
+			fs := flag.NewFlagSet("Uint", flag.ContinueOnError)
 			Uint(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
@@ -263,13 +264,13 @@ func TestToUint(t *testing.T) {
 			fs.Usage()
 
 			if result := writer.String(); result != tc.want {
-				t.Errorf("ToUint() = `%s`, want `%s`", result, tc.want)
+				t.Errorf("Uint() = `%s`, want `%s`", result, tc.want)
 			}
 		})
 	}
 }
 
-func TestToUint64(t *testing.T) {
+func TestUint64(t *testing.T) {
 	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
@@ -284,7 +285,7 @@ func TestToUint64(t *testing.T) {
 			"test",
 			0,
 			"Test flag",
-			"Usage of ToUint64:\n  -test uint\n    \t[cli] Test flag {TO_UINT64_TEST}\n",
+			"Usage of Uint64:\n  -test uint\n    \t[cli] Test flag {UINT64_TEST}\n",
 		},
 		"uint": {
 			"",
@@ -292,7 +293,7 @@ func TestToUint64(t *testing.T) {
 			"test",
 			10,
 			"Test flag",
-			"Usage of ToUint64:\n  -test uint\n    \t[cli] Test flag {TO_UINT64_TEST} (default 10)\n",
+			"Usage of Uint64:\n  -test uint\n    \t[cli] Test flag {UINT64_TEST} (default 10)\n",
 		},
 		"with prefix": {
 			"context",
@@ -300,7 +301,7 @@ func TestToUint64(t *testing.T) {
 			"test",
 			8000,
 			"Test flag",
-			"Usage of ToUint64:\n  -contextTest uint\n    \t[context] Test flag {TO_UINT64_CONTEXT_TEST} (default 8000)\n",
+			"Usage of Uint64:\n  -contextTest uint\n    \t[context] Test flag {UINT64_CONTEXT_TEST} (default 8000)\n",
 		},
 		"env": {
 			"",
@@ -308,7 +309,7 @@ func TestToUint64(t *testing.T) {
 			"value",
 			8000,
 			"Test flag",
-			"Usage of ToUint64:\n  -value uint\n    \t[cli] Test flag {TO_UINT64_VALUE} (default 6000)\n",
+			"Usage of Uint64:\n  -value uint\n    \t[cli] Test flag {UINT64_VALUE} (default 6000)\n",
 		},
 		"invalid env": {
 			"",
@@ -316,16 +317,16 @@ func TestToUint64(t *testing.T) {
 			"invalidValue",
 			8000,
 			"Test flag",
-			"Usage of ToUint64:\n  -invalidValue uint\n    \t[cli] Test flag {TO_UINT64_INVALID_VALUE} (default 8000)\n",
+			"Usage of Uint64:\n  -invalidValue uint\n    \t[cli] Test flag {UINT64_INVALID_VALUE} (default 8000)\n",
 		},
 	}
 
-	os.Setenv("TO_UINT64_VALUE", "6000")
-	os.Setenv("TO_UINT64_INVALID_VALUE", "-6000")
+	os.Setenv("UINT64_VALUE", "6000")
+	os.Setenv("UINT64_INVALID_VALUE", "-6000")
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("ToUint64", flag.ContinueOnError)
+			fs := flag.NewFlagSet("Uint64", flag.ContinueOnError)
 			Uint64(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
@@ -333,13 +334,13 @@ func TestToUint64(t *testing.T) {
 			fs.Usage()
 
 			if result := writer.String(); result != tc.want {
-				t.Errorf("ToUint64() = `%s`, want `%s`", result, tc.want)
+				t.Errorf("Uint64() = `%s`, want `%s`", result, tc.want)
 			}
 		})
 	}
 }
 
-func TestToFloat64(t *testing.T) {
+func TestFloat64(t *testing.T) {
 	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
@@ -354,7 +355,7 @@ func TestToFloat64(t *testing.T) {
 			"test",
 			float64(0),
 			"Test flag",
-			"Usage of ToFloat64:\n  -test float\n    \t[cli] Test flag {TO_FLOAT64_TEST}\n",
+			"Usage of Float64:\n  -test float\n    \t[cli] Test flag {FLOAT64_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -362,7 +363,7 @@ func TestToFloat64(t *testing.T) {
 			"test",
 			float64(12.34),
 			"Test flag",
-			"Usage of ToFloat64:\n  -contextTest float\n    \t[context] Test flag {TO_FLOAT64_CONTEXT_TEST} (default 12.34)\n",
+			"Usage of Float64:\n  -contextTest float\n    \t[context] Test flag {FLOAT64_CONTEXT_TEST} (default 12.34)\n",
 		},
 		"env": {
 			"",
@@ -370,7 +371,7 @@ func TestToFloat64(t *testing.T) {
 			"value",
 			float64(12.34),
 			"Test flag",
-			"Usage of ToFloat64:\n  -value float\n    \t[cli] Test flag {TO_FLOAT64_VALUE} (default 34.56)\n",
+			"Usage of Float64:\n  -value float\n    \t[cli] Test flag {FLOAT64_VALUE} (default 34.56)\n",
 		},
 		"invalid env": {
 			"",
@@ -378,16 +379,16 @@ func TestToFloat64(t *testing.T) {
 			"invalidValue",
 			float64(12.34),
 			"Test flag",
-			"Usage of ToFloat64:\n  -invalidValue float\n    \t[cli] Test flag {TO_FLOAT64_INVALID_VALUE} (default 12.34)\n",
+			"Usage of Float64:\n  -invalidValue float\n    \t[cli] Test flag {FLOAT64_INVALID_VALUE} (default 12.34)\n",
 		},
 	}
 
-	os.Setenv("TO_FLOAT64_VALUE", "34.56")
-	os.Setenv("TO_FLOAT64_INVALID_VALUE", "12.34.56")
+	os.Setenv("FLOAT64_VALUE", "34.56")
+	os.Setenv("FLOAT64_INVALID_VALUE", "12.34.56")
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("ToFloat64", flag.ContinueOnError)
+			fs := flag.NewFlagSet("Float64", flag.ContinueOnError)
 			Float64(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
@@ -395,13 +396,13 @@ func TestToFloat64(t *testing.T) {
 			fs.Usage()
 
 			if result := writer.String(); result != tc.want {
-				t.Errorf("ToFloat64() = `%s`, want `%s`", result, tc.want)
+				t.Errorf("Float64() = `%s`, want `%s`", result, tc.want)
 			}
 		})
 	}
 }
 
-func TestToBool(t *testing.T) {
+func TestBool(t *testing.T) {
 	cases := map[string]struct {
 		prefix       string
 		docPrefix    string
@@ -416,7 +417,7 @@ func TestToBool(t *testing.T) {
 			"test",
 			false,
 			"Test flag",
-			"Usage of ToBool:\n  -test\n    \t[cli] Test flag {TO_BOOL_TEST}\n",
+			"Usage of Bool:\n  -test\n    \t[cli] Test flag {BOOL_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -424,7 +425,7 @@ func TestToBool(t *testing.T) {
 			"test",
 			true,
 			"Test flag",
-			"Usage of ToBool:\n  -contextTest\n    \t[context] Test flag {TO_BOOL_CONTEXT_TEST} (default true)\n",
+			"Usage of Bool:\n  -contextTest\n    \t[context] Test flag {BOOL_CONTEXT_TEST} (default true)\n",
 		},
 		"env": {
 			"",
@@ -432,7 +433,7 @@ func TestToBool(t *testing.T) {
 			"value",
 			true,
 			"Test flag",
-			"Usage of ToBool:\n  -value\n    \t[cli] Test flag {TO_BOOL_VALUE}\n",
+			"Usage of Bool:\n  -value\n    \t[cli] Test flag {BOOL_VALUE}\n",
 		},
 		"invalid env": {
 			"",
@@ -440,16 +441,16 @@ func TestToBool(t *testing.T) {
 			"invalidValue",
 			true,
 			"Test flag",
-			"Usage of ToBool:\n  -invalidValue\n    \t[cli] Test flag {TO_BOOL_INVALID_VALUE} (default true)\n",
+			"Usage of Bool:\n  -invalidValue\n    \t[cli] Test flag {BOOL_INVALID_VALUE} (default true)\n",
 		},
 	}
 
-	os.Setenv("TO_BOOL_VALUE", "false")
-	os.Setenv("TO_BOOL_INVALID_VALUE", "test")
+	os.Setenv("BOOL_VALUE", "false")
+	os.Setenv("BOOL_INVALID_VALUE", "test")
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("ToBool", flag.ContinueOnError)
+			fs := flag.NewFlagSet("Bool", flag.ContinueOnError)
 			Bool(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
@@ -457,7 +458,69 @@ func TestToBool(t *testing.T) {
 			fs.Usage()
 
 			if result := writer.String(); result != tc.want {
-				t.Errorf("ToBool() = `%s`, want `%s`", result, tc.want)
+				t.Errorf("Bool() = `%s`, want `%s`", result, tc.want)
+			}
+		})
+	}
+}
+
+func TestDuration(t *testing.T) {
+	cases := map[string]struct {
+		prefix       string
+		docPrefix    string
+		name         string
+		defaultValue time.Duration
+		label        string
+		want         string
+	}{
+		"simple": {
+			"",
+			"cli",
+			"test",
+			0,
+			"Test flag",
+			"Usage of Duration:\n  -test duration\n    \t[cli] Test flag {DURATION_TEST}\n",
+		},
+		"with prefix": {
+			"context",
+			"cli",
+			"test",
+			time.Minute,
+			"Test flag",
+			"Usage of Duration:\n  -contextTest duration\n    \t[context] Test flag {DURATION_CONTEXT_TEST} (default 1m0s)\n",
+		},
+		"env": {
+			"",
+			"cli",
+			"value",
+			time.Minute,
+			"Test flag",
+			"Usage of Duration:\n  -value duration\n    \t[cli] Test flag {DURATION_VALUE} (default 1s)\n",
+		},
+		"invalid env": {
+			"",
+			"cli",
+			"invalidValue",
+			time.Minute,
+			"Test flag",
+			"Usage of Duration:\n  -invalidValue duration\n    \t[cli] Test flag {DURATION_INVALID_VALUE} (default 1m0s)\n",
+		},
+	}
+
+	os.Setenv("DURATION_VALUE", "1s")
+	os.Setenv("DURATION_INVALID_VALUE", "test")
+
+	for intention, tc := range cases {
+		t.Run(intention, func(t *testing.T) {
+			fs := flag.NewFlagSet("Duration", flag.ContinueOnError)
+			Duration(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+
+			var writer strings.Builder
+			fs.SetOutput(&writer)
+			fs.Usage()
+
+			if result := writer.String(); result != tc.want {
+				t.Errorf("Duration() = `%s`, want `%s`", result, tc.want)
 			}
 		})
 	}
