@@ -8,7 +8,7 @@ Golang flags parser with zero dependency.
 
 ### Usage
 
-See [simple.go](cmd/simple/simple.go) for basic usage.
+See [simple.go](cmd/simple/simple.go) for a basic usage.
 
 ## Concept
 

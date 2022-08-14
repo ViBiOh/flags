@@ -31,7 +31,7 @@ func String(fs *flag.FlagSet, prefix, docPrefix, name, label string, value strin
 	}), formatLabel(prefix, docPrefix, label, envName))
 }
 
-// Int creates a int flag
+// Int creates an int flag
 func Int(fs *flag.FlagSet, prefix, docPrefix, name, label string, value int, overrides []Override) *int {
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 	return fs.Int(FirstLowerCase(flagName), lookupDefaultValue(name, envName, value, overrides, func(input string) (int, error) {
@@ -40,7 +40,7 @@ func Int(fs *flag.FlagSet, prefix, docPrefix, name, label string, value int, ove
 	}), formatLabel(prefix, docPrefix, label, envName))
 }
 
-// Int64 creates a int64 flag
+// Int64 creates an int64 flag
 func Int64(fs *flag.FlagSet, prefix, docPrefix, name, label string, value int64, overrides []Override) *int64 {
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 	return fs.Int64(FirstLowerCase(flagName), lookupDefaultValue(name, envName, value, overrides, func(input string) (int64, error) {
@@ -48,7 +48,7 @@ func Int64(fs *flag.FlagSet, prefix, docPrefix, name, label string, value int64,
 	}), formatLabel(prefix, docPrefix, label, envName))
 }
 
-// Uint creates a uint flag
+// Uint creates an uint flag
 func Uint(fs *flag.FlagSet, prefix, docPrefix, name, label string, value uint, overrides []Override) *uint {
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 	return fs.Uint(FirstLowerCase(flagName), lookupDefaultValue(name, envName, value, overrides, func(input string) (uint, error) {
@@ -57,7 +57,7 @@ func Uint(fs *flag.FlagSet, prefix, docPrefix, name, label string, value uint, o
 	}), formatLabel(prefix, docPrefix, label, envName))
 }
 
-// Uint64 creates a uint64 flag
+// Uint64 creates an uint64 flag
 func Uint64(fs *flag.FlagSet, prefix, docPrefix, name, label string, value uint64, overrides []Override) *uint64 {
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 	return fs.Uint64(FirstLowerCase(flagName), lookupDefaultValue(name, envName, value, overrides, func(input string) (uint64, error) {
@@ -99,9 +99,9 @@ func formatLabel(prefix, docPrefix, label, envName string) string {
 	builder := strings.Builder{}
 
 	if len(docPrefixValue) != 0 {
-		fmt.Fprintf(&builder, "[%s] ", docPrefixValue)
+		_, _ = fmt.Fprintf(&builder, "[%s] ", docPrefixValue)
 	}
-	fmt.Fprintf(&builder, "%s {%s}", label, envName)
+	_, _ = fmt.Fprintf(&builder, "%s {%s}", label, envName)
 
 	return builder.String()
 }
