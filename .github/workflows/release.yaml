@@ -55,11 +55,3 @@ jobs:
           curl --disable --silent --show-error --location --max-time 30 "https://raw.githubusercontent.com/ViBiOh/scripts/main/bootstrap" | bash -s -- "-c" "release"
           export GIT_TAG="$(basename ${{ github.ref }})"
           scripts/release build assets clean
-      - name: Docker
-        if: ${{ env.docker_user != '' }}
-        env:
-          DOCKER_USER: ${{ env.docker_user }}
-          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-        run: |
-          curl --disable --silent --show-error --location --max-time 30 "https://raw.githubusercontent.com/ViBiOh/scripts/main/bootstrap" | bash -s -- "-c" "docker_promote"
-          scripts/docker_promote "${{ env.DOCKER_USER }}/$(make name)" "$(make version-date)" "$(basename ${{ github.ref }})"
