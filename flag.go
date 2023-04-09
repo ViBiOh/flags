@@ -85,6 +85,60 @@ func Duration(fs *flag.FlagSet, prefix, docPrefix, name, label string, value tim
 	return fs.Duration(FirstLowerCase(flagName), lookupDefaultValue(name, envName, value, overrides, time.ParseDuration), formatLabel(prefix, docPrefix, label, envName))
 }
 
+type stringSlice struct {
+	values *[]string
+	edited bool
+}
+
+func newStringSlice(val []string, p *[]string) *stringSlice {
+	*p = val
+
+	return &stringSlice{values: p}
+}
+
+func (i *stringSlice) String() string {
+	if i == nil || i.values == nil || len(*i.values) == 0 {
+		return ""
+	}
+
+	return "[" + strings.Join(*i.values, ", ") + "]"
+}
+
+func (i *stringSlice) Get() any {
+	return *i.values
+}
+
+func (i *stringSlice) Set(value string) error {
+	if !i.edited {
+		i.edited = true
+
+		*i.values = (*i.values)[:0]
+	}
+
+	*i.values = append(*i.values, value)
+
+	return nil
+}
+
+// StringSlice creates a string slice flag
+func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, label string, values []string, overrides []Override) *[]string {
+	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+
+	defaultValues := lookupDefaultValue(name, envName, values, overrides, func(input string) ([]string, error) {
+		if len(input) == 0 {
+			return []string{}, nil
+		}
+
+		return strings.Split(input, ","), nil
+	})
+
+	p := new([]string)
+
+	fs.Var(newStringSlice(defaultValues, p), FirstLowerCase(flagName), formatLabel(prefix, docPrefix, label, envName))
+
+	return p
+}
+
 func getNameAndEnv(fs *flag.FlagSet, prefix, name string) (string, string) {
 	name = prefix + FirstUpperCase(name)
 	return name, strings.ToUpper(SnakeCase(FirstUpperCase(fs.Name()) + FirstUpperCase(name)))

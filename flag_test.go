@@ -525,3 +525,56 @@ func TestDuration(t *testing.T) {
 		})
 	}
 }
+
+func TestStringSlice(t *testing.T) {
+	cases := map[string]struct {
+		prefix       string
+		docPrefix    string
+		name         string
+		defaultValue []string
+		label        string
+		want         string
+	}{
+		"simple": {
+			"",
+			"cli",
+			"test",
+			nil,
+			"Test flag",
+			"Usage of Values:\n  -test value\n    \t[cli] Test flag {VALUES_TEST}\n",
+		},
+		"with prefix": {
+			"context",
+			"cli",
+			"test",
+			[]string{"value"},
+			"Test flag",
+			"Usage of Values:\n  -contextTest value\n    \t[context] Test flag {VALUES_CONTEXT_TEST} (default [value])\n",
+		},
+		"env": {
+			"",
+			"cli",
+			"value",
+			[]string{"value"},
+			"Test flag",
+			"Usage of Values:\n  -value value\n    \t[cli] Test flag {VALUES_VALUE} (default [overriden])\n",
+		},
+	}
+
+	os.Setenv("VALUES_VALUE", "overriden")
+
+	for intention, tc := range cases {
+		t.Run(intention, func(t *testing.T) {
+			fs := flag.NewFlagSet("Values", flag.ContinueOnError)
+			StringSlice(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+
+			var writer strings.Builder
+			fs.SetOutput(&writer)
+			fs.Usage()
+
+			if result := writer.String(); result != tc.want {
+				t.Errorf("Duration() = `%s`, want `%s`", result, tc.want)
+			}
+		})
+	}
+}
