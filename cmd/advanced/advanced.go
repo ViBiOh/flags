@@ -19,9 +19,9 @@ type databaseConfig struct {
 
 func databaseFlags(fs *flag.FlagSet, prefix string, overrides ...flags.Override) databaseConfig {
 	return databaseConfig{
-		url:     flags.String(fs, prefix, "db", "Url", "Database url", "", overrides),
+		url:     flags.String(fs, prefix, "db", "Url", "", "Database url", "", overrides),
 		port:    flags.Uint(fs, prefix, "db", "Port", "Database port", 5432, overrides),
-		name:    flags.String(fs, prefix, "db", "Name", "Database name", "user", overrides),
+		name:    flags.String(fs, prefix, "db", "Name", "", "Database name", "user", overrides),
 		timeout: flags.Duration(fs, prefix, "db", "Timeout", "Request timeout", time.Second, overrides),
 	}
 }

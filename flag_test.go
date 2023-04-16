@@ -63,7 +63,7 @@ func TestString(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("String", flag.ContinueOnError)
-			String(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, tc.overrides)
+			String(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, tc.overrides)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -125,7 +125,7 @@ func TestInt(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Int", flag.ContinueOnError)
-			Int(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+			Int(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -541,7 +541,7 @@ func TestStringSlice(t *testing.T) {
 			"test",
 			nil,
 			"Test flag",
-			"Usage of Values:\n  -test value\n    \t[cli] Test flag {VALUES_TEST}\n",
+			"Usage of Values:\n  -test string slice\n    \t[cli] Test flag {VALUES_TEST}\n    \t\t  string slice, environment value should be comma separated\n",
 		},
 		"with prefix": {
 			"context",
@@ -549,7 +549,7 @@ func TestStringSlice(t *testing.T) {
 			"test",
 			[]string{"value"},
 			"Test flag",
-			"Usage of Values:\n  -contextTest value\n    \t[context] Test flag {VALUES_CONTEXT_TEST} (default [value])\n",
+			"Usage of Values:\n  -contextTest string slice\n    \t[context] Test flag {VALUES_CONTEXT_TEST}\n    \t\t  string slice, environment value should be comma separated (default [value])\n",
 		},
 		"env": {
 			"",
@@ -557,7 +557,7 @@ func TestStringSlice(t *testing.T) {
 			"value",
 			[]string{"value"},
 			"Test flag",
-			"Usage of Values:\n  -value value\n    \t[cli] Test flag {VALUES_VALUE} (default [overriden])\n",
+			"Usage of Values:\n  -value string slice\n    \t[cli] Test flag {VALUES_VALUE}\n    \t\t  string slice, environment value should be comma separated (default [overriden])\n",
 		},
 	}
 

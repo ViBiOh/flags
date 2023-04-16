@@ -20,7 +20,7 @@ import (
 func main() {
 	fs := flag.NewFlagSet("my-cli", flag.ExitOnError)
 
-	address := flags.String(fs, "exemple", "server", "Address", "Listen address", "", nil)
+	address := flags.String(fs, "exemple", "server", "Address", "a", "Listen address", "", nil)
 	port := flags.Uint(fs, "exemple", "server", "Port", "Listen port (0 to disable)", 1080, nil)
 	headers := flags.StringSlice(fs, "exemple", "server", "Header", "Header to add", []string{"x-user", "x-auth"}, nil)
 
