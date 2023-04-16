@@ -187,7 +187,7 @@ func TestInt64(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Int64", flag.ContinueOnError)
-			Int64(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+			Int64(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -257,7 +257,7 @@ func TestUint(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Uint", flag.ContinueOnError)
-			Uint(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+			Uint(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -327,7 +327,7 @@ func TestUint64(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Uint64", flag.ContinueOnError)
-			Uint64(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+			Uint64(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -389,7 +389,7 @@ func TestFloat64(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Float64", flag.ContinueOnError)
-			Float64(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+			Float64(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -451,7 +451,7 @@ func TestBool(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Bool", flag.ContinueOnError)
-			Bool(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+			Bool(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -513,7 +513,7 @@ func TestDuration(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Duration", flag.ContinueOnError)
-			Duration(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+			Duration(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -566,7 +566,7 @@ func TestStringSlice(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Values", flag.ContinueOnError)
-			StringSlice(fs, tc.prefix, tc.docPrefix, tc.name, tc.label, tc.defaultValue, nil)
+			StringSlice(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
