@@ -14,16 +14,16 @@ func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, 
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 
 	output := new(string)
-
+	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (string, error) {
 		return input, nil
 	})
 
 	if len(shorthand) > 0 {
-		fs.StringVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, fmt.Sprintf("Shorthand for -%s", FirstLowerCase(flagName)))
+		fs.StringVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.StringVar(output, FirstLowerCase(flagName), initialValue, formatLabel(prefix, docPrefix, label, envName))
+	fs.StringVar(output, FirstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
@@ -33,17 +33,17 @@ func Int(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, val
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 
 	output := new(int)
-
+	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (int, error) {
 		intVal, err := strconv.ParseInt(input, 10, 32)
 		return int(intVal), err
 	})
 
 	if len(shorthand) > 0 {
-		fs.IntVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, fmt.Sprintf("Shorthand for -%s", FirstLowerCase(flagName)))
+		fs.IntVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.IntVar(output, FirstLowerCase(flagName), initialValue, formatLabel(prefix, docPrefix, label, envName))
+	fs.IntVar(output, FirstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
@@ -53,16 +53,16 @@ func Int64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, v
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 
 	output := new(int64)
-
+	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (int64, error) {
 		return strconv.ParseInt(input, 10, 64)
 	})
 
 	if len(shorthand) > 0 {
-		fs.Int64Var(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, fmt.Sprintf("Shorthand for -%s", FirstLowerCase(flagName)))
+		fs.Int64Var(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.Int64Var(output, FirstLowerCase(flagName), initialValue, formatLabel(prefix, docPrefix, label, envName))
+	fs.Int64Var(output, FirstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
@@ -72,17 +72,17 @@ func Uint(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, va
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 
 	output := new(uint)
-
+	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (uint, error) {
 		intVal, err := strconv.ParseUint(input, 10, 32)
 		return uint(intVal), err
 	})
 
 	if len(shorthand) > 0 {
-		fs.UintVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, fmt.Sprintf("Shorthand for -%s", FirstLowerCase(flagName)))
+		fs.UintVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.UintVar(output, FirstLowerCase(flagName), initialValue, formatLabel(prefix, docPrefix, label, envName))
+	fs.UintVar(output, FirstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
@@ -92,16 +92,16 @@ func Uint64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, 
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 
 	output := new(uint64)
-
+	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (uint64, error) {
 		return strconv.ParseUint(input, 10, 64)
 	})
 
 	if len(shorthand) > 0 {
-		fs.Uint64Var(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, fmt.Sprintf("Shorthand for -%s", FirstLowerCase(flagName)))
+		fs.Uint64Var(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.Uint64Var(output, FirstLowerCase(flagName), initialValue, formatLabel(prefix, docPrefix, label, envName))
+	fs.Uint64Var(output, FirstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
@@ -111,16 +111,16 @@ func Float64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string,
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 
 	output := new(float64)
-
+	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (float64, error) {
 		return strconv.ParseFloat(input, 64)
 	})
 
 	if len(shorthand) > 0 {
-		fs.Float64Var(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, fmt.Sprintf("Shorthand for -%s", FirstLowerCase(flagName)))
+		fs.Float64Var(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.Float64Var(output, FirstLowerCase(flagName), initialValue, formatLabel(prefix, docPrefix, label, envName))
+	fs.Float64Var(output, FirstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
@@ -130,14 +130,14 @@ func Bool(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, va
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 
 	output := new(bool)
-
+	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, strconv.ParseBool)
 
 	if len(shorthand) > 0 {
-		fs.BoolVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, fmt.Sprintf("Shorthand for -%s", FirstLowerCase(flagName)))
+		fs.BoolVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.BoolVar(output, FirstLowerCase(flagName), initialValue, formatLabel(prefix, docPrefix, label, envName))
+	fs.BoolVar(output, FirstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
@@ -147,14 +147,14 @@ func Duration(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string
 	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
 
 	output := new(time.Duration)
-
+	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, time.ParseDuration)
 
 	if len(shorthand) > 0 {
-		fs.DurationVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, fmt.Sprintf("Shorthand for -%s", FirstLowerCase(flagName)))
+		fs.DurationVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.DurationVar(output, FirstLowerCase(flagName), initialValue, formatLabel(prefix, docPrefix, label, envName))
+	fs.DurationVar(output, FirstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
@@ -206,11 +206,17 @@ func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label str
 		return strings.Split(input, ","), nil
 	})
 
-	p := new([]string)
+	output := new([]string)
+	targetOutput := newStringSlice(initialValue, output)
+	usage := formatLabel(prefix, docPrefix, label, envName) + ", as a `string slice`"
 
-	fs.Var(newStringSlice(initialValue, p), FirstLowerCase(flagName), formatLabel(prefix, docPrefix, label, envName)+"\n\t  `string slice`, environment value should be comma separated")
+	if len(shorthand) > 0 {
+		fs.Var(targetOutput, FirstLowerCase(prefix+FirstUpperCase(shorthand)), usage)
+	}
 
-	return p
+	fs.Var(targetOutput, FirstLowerCase(flagName), usage)
+
+	return output
 }
 
 func getNameAndEnv(fs *flag.FlagSet, prefix, name string) (string, string) {

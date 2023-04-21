@@ -1,6 +1,9 @@
 package flags
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"regexp"
 	"strings"
 	"unicode"
@@ -45,4 +48,13 @@ func SnakeCase(s string) string {
 	}
 
 	return strings.ReplaceAll(strings.ReplaceAll(snaked, "-", "_"), "__", "_")
+}
+
+func Sha(content string) string {
+	hasher := sha256.New()
+
+	// no err check https://golang.org/pkg/hash/#Hash
+	_, _ = fmt.Fprint(hasher, content)
+
+	return hex.EncodeToString(hasher.Sum(nil))
 }

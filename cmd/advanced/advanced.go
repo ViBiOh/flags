@@ -27,40 +27,22 @@ func databaseFlags(fs *flag.FlagSet, prefix string, overrides ...flags.Override)
 }
 
 // Usage of my-cli:
-//   -mainN string
-//         Shorthand for -mainName (default "user")
-//   -mainName string
-//         [main] Database name {MY_CLI_MAIN_NAME} (default "user")
-//   -mainP uint
-//         Shorthand for -mainPort (default 5432)
-//   -mainPort uint
-//         [main] Database port {MY_CLI_MAIN_PORT} (default 5432)
-//   -mainTimeout duration
-//         [main] Request timeout {MY_CLI_MAIN_TIMEOUT} (default 1s)
-//   -mainU string
-//         Shorthand for -mainUrl
-//   -mainUrl string
-//         [main] Database url {MY_CLI_MAIN_URL}
-//   -replicaN string
-//         Shorthand for -replicaName (default "user-replica")
-//   -replicaName string
-//         [replica] Database name {MY_CLI_REPLICA_NAME} (default "user-replica")
-//   -replicaP uint
-//         Shorthand for -replicaPort (default 5432)
-//   -replicaPort uint
-//         [replica] Database port {MY_CLI_REPLICA_PORT} (default 5432)
-//   -replicaTimeout duration
-//         [replica] Request timeout {MY_CLI_REPLICA_TIMEOUT} (default 1s)
-//   -replicaU string
-//         Shorthand for -replicaUrl
-//   -replicaUrl string
-//         [replica] Database url {MY_CLI_REPLICA_URL}
+//   -n,        --name            string    [db] Database name {MY_CLI_NAME}
+//   -p,        --port            uint      [db] Database port {MY_CLI_PORT}
+//   -replicaN, --replicaName     string    [replica] Database name {MY_CLI_REPLICA_NAME}
+//   -replicaP, --replicaPort     uint      [replica] Database port {MY_CLI_REPLICA_PORT}
+//              --replicaTimeout  duration  [replica] Request timeout {MY_CLI_REPLICA_TIMEOUT}
+//   -replicaU, --replicaUrl      string    [replica] Database url {MY_CLI_REPLICA_URL}
+//              --timeout         duration  [db] Request timeout {MY_CLI_TIMEOUT}
+//   -u,        --url             string    [db] Database url {MY_CLI_URL}
 
 func main() {
 	fs := flag.NewFlagSet("my-cli", flag.ExitOnError)
 
-	mainConfig := databaseFlags(fs, "main")
+	mainConfig := databaseFlags(fs, "")
 	replicaConfig := databaseFlags(fs, "replica", flags.NewOverride("Name", "user-replica"))
+
+	fs.Usage = flags.Usage(fs)
 
 	if err := fs.Parse(os.Args[1:]); err != nil {
 		log.Fatal(err)

@@ -541,7 +541,7 @@ func TestStringSlice(t *testing.T) {
 			"test",
 			nil,
 			"Test flag",
-			"Usage of Values:\n  -test string slice\n    \t[cli] Test flag {VALUES_TEST}\n    \t\t  string slice, environment value should be comma separated\n",
+			"Usage of Values:\n  -test string slice\n    \t[cli] Test flag {VALUES_TEST}, as a string slice\n",
 		},
 		"with prefix": {
 			"context",
@@ -549,7 +549,7 @@ func TestStringSlice(t *testing.T) {
 			"test",
 			[]string{"value"},
 			"Test flag",
-			"Usage of Values:\n  -contextTest string slice\n    \t[context] Test flag {VALUES_CONTEXT_TEST}\n    \t\t  string slice, environment value should be comma separated (default [value])\n",
+			"Usage of Values:\n  -contextTest string slice\n    \t[context] Test flag {VALUES_CONTEXT_TEST}, as a string slice (default [value])\n",
 		},
 		"env": {
 			"",
@@ -557,7 +557,7 @@ func TestStringSlice(t *testing.T) {
 			"value",
 			[]string{"value"},
 			"Test flag",
-			"Usage of Values:\n  -value string slice\n    \t[cli] Test flag {VALUES_VALUE}\n    \t\t  string slice, environment value should be comma separated (default [overriden])\n",
+			"Usage of Values:\n  -value string slice\n    \t[cli] Test flag {VALUES_VALUE}, as a string slice (default [overriden])\n",
 		},
 	}
 
