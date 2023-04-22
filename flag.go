@@ -10,8 +10,8 @@ import (
 )
 
 // String creates a string flag
-func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, value string, overrides []Override) *string {
-	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value string, overrides []Override) *string {
+	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 
 	output := new(string)
 	usage := formatLabel(prefix, docPrefix, label, envName)
@@ -20,17 +20,17 @@ func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, 
 	})
 
 	if len(shorthand) > 0 {
-		fs.StringVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
+		fs.StringVar(output, firstLowerCase(prefix+firstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.StringVar(output, FirstLowerCase(flagName), initialValue, usage)
+	fs.StringVar(output, firstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
 
 // Int creates an int flag
-func Int(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, value int, overrides []Override) *int {
-	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+func Int(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value int, overrides []Override) *int {
+	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 
 	output := new(int)
 	usage := formatLabel(prefix, docPrefix, label, envName)
@@ -40,17 +40,17 @@ func Int(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, val
 	})
 
 	if len(shorthand) > 0 {
-		fs.IntVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
+		fs.IntVar(output, firstLowerCase(prefix+firstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.IntVar(output, FirstLowerCase(flagName), initialValue, usage)
+	fs.IntVar(output, firstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
 
 // Int64 creates an int64 flag
-func Int64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, value int64, overrides []Override) *int64 {
-	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+func Int64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value int64, overrides []Override) *int64 {
+	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 
 	output := new(int64)
 	usage := formatLabel(prefix, docPrefix, label, envName)
@@ -59,17 +59,17 @@ func Int64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, v
 	})
 
 	if len(shorthand) > 0 {
-		fs.Int64Var(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
+		fs.Int64Var(output, firstLowerCase(prefix+firstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.Int64Var(output, FirstLowerCase(flagName), initialValue, usage)
+	fs.Int64Var(output, firstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
 
 // Uint creates an uint flag
-func Uint(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, value uint, overrides []Override) *uint {
-	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+func Uint(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value uint, overrides []Override) *uint {
+	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 
 	output := new(uint)
 	usage := formatLabel(prefix, docPrefix, label, envName)
@@ -79,17 +79,17 @@ func Uint(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, va
 	})
 
 	if len(shorthand) > 0 {
-		fs.UintVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
+		fs.UintVar(output, firstLowerCase(prefix+firstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.UintVar(output, FirstLowerCase(flagName), initialValue, usage)
+	fs.UintVar(output, firstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
 
 // Uint64 creates an uint64 flag
-func Uint64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, value uint64, overrides []Override) *uint64 {
-	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+func Uint64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value uint64, overrides []Override) *uint64 {
+	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 
 	output := new(uint64)
 	usage := formatLabel(prefix, docPrefix, label, envName)
@@ -98,17 +98,17 @@ func Uint64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, 
 	})
 
 	if len(shorthand) > 0 {
-		fs.Uint64Var(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
+		fs.Uint64Var(output, firstLowerCase(prefix+firstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.Uint64Var(output, FirstLowerCase(flagName), initialValue, usage)
+	fs.Uint64Var(output, firstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
 
 // Float64 creates a float64 flag
-func Float64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, value float64, overrides []Override) *float64 {
-	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+func Float64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value float64, overrides []Override) *float64 {
+	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 
 	output := new(float64)
 	usage := formatLabel(prefix, docPrefix, label, envName)
@@ -117,44 +117,44 @@ func Float64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string,
 	})
 
 	if len(shorthand) > 0 {
-		fs.Float64Var(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
+		fs.Float64Var(output, firstLowerCase(prefix+firstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.Float64Var(output, FirstLowerCase(flagName), initialValue, usage)
+	fs.Float64Var(output, firstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
 
 // Bool creates a bool flag
-func Bool(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, value bool, overrides []Override) *bool {
-	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+func Bool(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value bool, overrides []Override) *bool {
+	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 
 	output := new(bool)
 	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, strconv.ParseBool)
 
 	if len(shorthand) > 0 {
-		fs.BoolVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
+		fs.BoolVar(output, firstLowerCase(prefix+firstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.BoolVar(output, FirstLowerCase(flagName), initialValue, usage)
+	fs.BoolVar(output, firstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
 
 // Duration creates a duration flag
-func Duration(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, value time.Duration, overrides []Override) *time.Duration {
-	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+func Duration(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value time.Duration, overrides []Override) *time.Duration {
+	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 
 	output := new(time.Duration)
 	usage := formatLabel(prefix, docPrefix, label, envName)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, time.ParseDuration)
 
 	if len(shorthand) > 0 {
-		fs.DurationVar(output, FirstLowerCase(prefix+FirstUpperCase(shorthand)), initialValue, usage)
+		fs.DurationVar(output, firstLowerCase(prefix+firstUpperCase(shorthand)), initialValue, usage)
 	}
 
-	fs.DurationVar(output, FirstLowerCase(flagName), initialValue, usage)
+	fs.DurationVar(output, firstLowerCase(flagName), initialValue, usage)
 
 	return output
 }
@@ -195,33 +195,38 @@ func (i *stringSlice) Set(value string) error {
 }
 
 // StringSlice creates a string slice flag
-func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label string, value []string, overrides []Override) *[]string {
-	flagName, envName := getNameAndEnv(fs, FirstUpperCase(prefix), name)
+func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env, envSeparator string, value []string, overrides []Override) *[]string {
+	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) ([]string, error) {
 		if len(input) == 0 {
 			return []string{}, nil
 		}
 
-		return strings.Split(input, ","), nil
+		return strings.Split(input, envSeparator), nil
 	})
 
 	output := new([]string)
 	targetOutput := newStringSlice(initialValue, output)
-	usage := formatLabel(prefix, docPrefix, label, envName) + ", as a `string slice`"
+	usage := formatLabel(prefix, docPrefix, label, envName) + fmt.Sprintf(", as a `string slice`, environment variable separated by %q", envSeparator)
 
 	if len(shorthand) > 0 {
-		fs.Var(targetOutput, FirstLowerCase(prefix+FirstUpperCase(shorthand)), usage)
+		fs.Var(targetOutput, firstLowerCase(prefix+firstUpperCase(shorthand)), usage)
 	}
 
-	fs.Var(targetOutput, FirstLowerCase(flagName), usage)
+	fs.Var(targetOutput, firstLowerCase(flagName), usage)
 
 	return output
 }
 
-func getNameAndEnv(fs *flag.FlagSet, prefix, name string) (string, string) {
-	name = prefix + FirstUpperCase(name)
-	return name, strings.ToUpper(SnakeCase(FirstUpperCase(fs.Name()) + FirstUpperCase(name)))
+func getNameAndEnv(fs *flag.FlagSet, prefix, name, env string) (string, string) {
+	name = prefix + firstUpperCase(name)
+
+	if len(env) == 0 {
+		env = strings.ToUpper(SnakeCase(firstUpperCase(fs.Name()) + firstUpperCase(name)))
+	}
+
+	return name, env
 }
 
 func formatLabel(prefix, docPrefix, label, envName string) string {
@@ -235,7 +240,7 @@ func formatLabel(prefix, docPrefix, label, envName string) string {
 	if len(docPrefixValue) != 0 {
 		_, _ = fmt.Fprintf(&builder, "[%s] ", docPrefixValue)
 	}
-	_, _ = fmt.Fprintf(&builder, "%s {%s}", label, envName)
+	_, _ = fmt.Fprintf(&builder, "%s ${%s}", label, envName)
 
 	return builder.String()
 }

@@ -15,6 +15,7 @@ func TestString(t *testing.T) {
 		name         string
 		defaultValue string
 		label        string
+		env          string
 		overrides    []Override
 		want         string
 	}{
@@ -24,8 +25,9 @@ func TestString(t *testing.T) {
 			"test",
 			"",
 			"Test flag",
+			"",
 			nil,
-			"Usage of String:\n  -test string\n    \t[cli] Test flag {STRING_TEST}\n",
+			"Usage of String:\n  -test string\n    \t[cli] Test flag ${STRING_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -33,8 +35,9 @@ func TestString(t *testing.T) {
 			"test",
 			"default",
 			"Test flag",
+			"",
 			nil,
-			"Usage of String:\n  -contextTest string\n    \t[context] Test flag {STRING_CONTEXT_TEST} (default \"default\")\n",
+			"Usage of String:\n  -contextTest string\n    \t[context] Test flag ${STRING_CONTEXT_TEST} (default \"default\")\n",
 		},
 		"env": {
 			"",
@@ -42,8 +45,9 @@ func TestString(t *testing.T) {
 			"value",
 			"default",
 			"Test flag",
+			"",
 			nil,
-			"Usage of String:\n  -value string\n    \t[cli] Test flag {STRING_VALUE} (default \"test\")\n",
+			"Usage of String:\n  -value string\n    \t[cli] Test flag ${STRING_VALUE} (default \"test\")\n",
 		},
 		"override": {
 			"",
@@ -51,10 +55,11 @@ func TestString(t *testing.T) {
 			"overriden",
 			"default",
 			"Test override",
+			"FORCED_ENV_NAME",
 			[]Override{
 				NewOverride("overriden", "override"),
 			},
-			"Usage of String:\n  -overriden string\n    \t[cli] Test override {STRING_OVERRIDEN} (default \"override\")\n",
+			"Usage of String:\n  -overriden string\n    \t[cli] Test override ${FORCED_ENV_NAME} (default \"override\")\n",
 		},
 	}
 
@@ -63,7 +68,7 @@ func TestString(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("String", flag.ContinueOnError)
-			String(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, tc.overrides)
+			String(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.env, tc.defaultValue, tc.overrides)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -83,6 +88,7 @@ func TestInt(t *testing.T) {
 		name         string
 		defaultValue int
 		label        string
+		env          string
 		want         string
 	}{
 		"simple": {
@@ -91,7 +97,8 @@ func TestInt(t *testing.T) {
 			"test",
 			0,
 			"Test flag",
-			"Usage of Int:\n  -test int\n    \t[cli] Test flag {INT_TEST}\n",
+			"",
+			"Usage of Int:\n  -test int\n    \t[cli] Test flag ${INT_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -99,7 +106,8 @@ func TestInt(t *testing.T) {
 			"test",
 			8000,
 			"Test flag",
-			"Usage of Int:\n  -contextTest int\n    \t[context] Test flag {INT_CONTEXT_TEST} (default 8000)\n",
+			"",
+			"Usage of Int:\n  -contextTest int\n    \t[context] Test flag ${INT_CONTEXT_TEST} (default 8000)\n",
 		},
 		"env": {
 			"",
@@ -107,7 +115,8 @@ func TestInt(t *testing.T) {
 			"value",
 			8000,
 			"Test flag",
-			"Usage of Int:\n  -value int\n    \t[cli] Test flag {INT_VALUE} (default 6000)\n",
+			"",
+			"Usage of Int:\n  -value int\n    \t[cli] Test flag ${INT_VALUE} (default 6000)\n",
 		},
 		"invalid env": {
 			"",
@@ -115,7 +124,8 @@ func TestInt(t *testing.T) {
 			"invalidValue",
 			8000,
 			"Test flag",
-			"Usage of Int:\n  -invalidValue int\n    \t[cli] Test flag {INT_INVALID_VALUE} (default 8000)\n",
+			"",
+			"Usage of Int:\n  -invalidValue int\n    \t[cli] Test flag ${INT_INVALID_VALUE} (default 8000)\n",
 		},
 	}
 
@@ -125,7 +135,7 @@ func TestInt(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Int", flag.ContinueOnError)
-			Int(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
+			Int(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.env, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -145,6 +155,7 @@ func TestInt64(t *testing.T) {
 		name         string
 		defaultValue int64
 		label        string
+		env          string
 		want         string
 	}{
 		"simple": {
@@ -153,7 +164,8 @@ func TestInt64(t *testing.T) {
 			"test",
 			0,
 			"Test flag",
-			"Usage of Int64:\n  -test int\n    \t[cli] Test flag {INT64_TEST}\n",
+			"",
+			"Usage of Int64:\n  -test int\n    \t[cli] Test flag ${INT64_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -161,7 +173,8 @@ func TestInt64(t *testing.T) {
 			"test",
 			8000,
 			"Test flag",
-			"Usage of Int64:\n  -contextTest int\n    \t[context] Test flag {INT64_CONTEXT_TEST} (default 8000)\n",
+			"",
+			"Usage of Int64:\n  -contextTest int\n    \t[context] Test flag ${INT64_CONTEXT_TEST} (default 8000)\n",
 		},
 		"env": {
 			"",
@@ -169,7 +182,8 @@ func TestInt64(t *testing.T) {
 			"value",
 			8000,
 			"Test flag",
-			"Usage of Int64:\n  -value int\n    \t[cli] Test flag {INT64_VALUE} (default 6000)\n",
+			"",
+			"Usage of Int64:\n  -value int\n    \t[cli] Test flag ${INT64_VALUE} (default 6000)\n",
 		},
 		"invalid env": {
 			"",
@@ -177,7 +191,8 @@ func TestInt64(t *testing.T) {
 			"invalidValue",
 			8000,
 			"Test flag",
-			"Usage of Int64:\n  -invalidValue int\n    \t[cli] Test flag {INT64_INVALID_VALUE} (default 8000)\n",
+			"",
+			"Usage of Int64:\n  -invalidValue int\n    \t[cli] Test flag ${INT64_INVALID_VALUE} (default 8000)\n",
 		},
 	}
 
@@ -187,7 +202,7 @@ func TestInt64(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Int64", flag.ContinueOnError)
-			Int64(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
+			Int64(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.env, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -207,6 +222,7 @@ func TestUint(t *testing.T) {
 		name         string
 		defaultValue uint
 		label        string
+		env          string
 		want         string
 	}{
 		"simple": {
@@ -215,7 +231,8 @@ func TestUint(t *testing.T) {
 			"test",
 			0,
 			"Test flag",
-			"Usage of Uint:\n  -test uint\n    \t[cli] Test flag {UINT_TEST}\n",
+			"",
+			"Usage of Uint:\n  -test uint\n    \t[cli] Test flag ${UINT_TEST}\n",
 		},
 		"uint": {
 			"",
@@ -223,7 +240,8 @@ func TestUint(t *testing.T) {
 			"test",
 			uint(10),
 			"Test flag",
-			"Usage of Uint:\n  -test uint\n    \t[cli] Test flag {UINT_TEST} (default 10)\n",
+			"",
+			"Usage of Uint:\n  -test uint\n    \t[cli] Test flag ${UINT_TEST} (default 10)\n",
 		},
 		"with prefix": {
 			"context",
@@ -231,7 +249,8 @@ func TestUint(t *testing.T) {
 			"test",
 			8000,
 			"Test flag",
-			"Usage of Uint:\n  -contextTest uint\n    \t[context] Test flag {UINT_CONTEXT_TEST} (default 8000)\n",
+			"",
+			"Usage of Uint:\n  -contextTest uint\n    \t[context] Test flag ${UINT_CONTEXT_TEST} (default 8000)\n",
 		},
 		"env": {
 			"",
@@ -239,7 +258,8 @@ func TestUint(t *testing.T) {
 			"value",
 			8000,
 			"Test flag",
-			"Usage of Uint:\n  -value uint\n    \t[cli] Test flag {UINT_VALUE} (default 6000)\n",
+			"",
+			"Usage of Uint:\n  -value uint\n    \t[cli] Test flag ${UINT_VALUE} (default 6000)\n",
 		},
 		"invalid env": {
 			"",
@@ -247,7 +267,8 @@ func TestUint(t *testing.T) {
 			"invalidValue",
 			8000,
 			"Test flag",
-			"Usage of Uint:\n  -invalidValue uint\n    \t[cli] Test flag {UINT_INVALID_VALUE} (default 8000)\n",
+			"",
+			"Usage of Uint:\n  -invalidValue uint\n    \t[cli] Test flag ${UINT_INVALID_VALUE} (default 8000)\n",
 		},
 	}
 
@@ -257,7 +278,7 @@ func TestUint(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Uint", flag.ContinueOnError)
-			Uint(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
+			Uint(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.env, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -277,6 +298,7 @@ func TestUint64(t *testing.T) {
 		name         string
 		defaultValue uint64
 		label        string
+		env          string
 		want         string
 	}{
 		"simple": {
@@ -285,7 +307,8 @@ func TestUint64(t *testing.T) {
 			"test",
 			0,
 			"Test flag",
-			"Usage of Uint64:\n  -test uint\n    \t[cli] Test flag {UINT64_TEST}\n",
+			"",
+			"Usage of Uint64:\n  -test uint\n    \t[cli] Test flag ${UINT64_TEST}\n",
 		},
 		"uint": {
 			"",
@@ -293,7 +316,8 @@ func TestUint64(t *testing.T) {
 			"test",
 			10,
 			"Test flag",
-			"Usage of Uint64:\n  -test uint\n    \t[cli] Test flag {UINT64_TEST} (default 10)\n",
+			"",
+			"Usage of Uint64:\n  -test uint\n    \t[cli] Test flag ${UINT64_TEST} (default 10)\n",
 		},
 		"with prefix": {
 			"context",
@@ -301,7 +325,8 @@ func TestUint64(t *testing.T) {
 			"test",
 			8000,
 			"Test flag",
-			"Usage of Uint64:\n  -contextTest uint\n    \t[context] Test flag {UINT64_CONTEXT_TEST} (default 8000)\n",
+			"",
+			"Usage of Uint64:\n  -contextTest uint\n    \t[context] Test flag ${UINT64_CONTEXT_TEST} (default 8000)\n",
 		},
 		"env": {
 			"",
@@ -309,7 +334,8 @@ func TestUint64(t *testing.T) {
 			"value",
 			8000,
 			"Test flag",
-			"Usage of Uint64:\n  -value uint\n    \t[cli] Test flag {UINT64_VALUE} (default 6000)\n",
+			"",
+			"Usage of Uint64:\n  -value uint\n    \t[cli] Test flag ${UINT64_VALUE} (default 6000)\n",
 		},
 		"invalid env": {
 			"",
@@ -317,7 +343,8 @@ func TestUint64(t *testing.T) {
 			"invalidValue",
 			8000,
 			"Test flag",
-			"Usage of Uint64:\n  -invalidValue uint\n    \t[cli] Test flag {UINT64_INVALID_VALUE} (default 8000)\n",
+			"",
+			"Usage of Uint64:\n  -invalidValue uint\n    \t[cli] Test flag ${UINT64_INVALID_VALUE} (default 8000)\n",
 		},
 	}
 
@@ -327,7 +354,7 @@ func TestUint64(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Uint64", flag.ContinueOnError)
-			Uint64(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
+			Uint64(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.env, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -347,6 +374,7 @@ func TestFloat64(t *testing.T) {
 		name         string
 		defaultValue float64
 		label        string
+		env          string
 		want         string
 	}{
 		"simple": {
@@ -355,7 +383,8 @@ func TestFloat64(t *testing.T) {
 			"test",
 			float64(0),
 			"Test flag",
-			"Usage of Float64:\n  -test float\n    \t[cli] Test flag {FLOAT64_TEST}\n",
+			"",
+			"Usage of Float64:\n  -test float\n    \t[cli] Test flag ${FLOAT64_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -363,7 +392,8 @@ func TestFloat64(t *testing.T) {
 			"test",
 			12.34,
 			"Test flag",
-			"Usage of Float64:\n  -contextTest float\n    \t[context] Test flag {FLOAT64_CONTEXT_TEST} (default 12.34)\n",
+			"",
+			"Usage of Float64:\n  -contextTest float\n    \t[context] Test flag ${FLOAT64_CONTEXT_TEST} (default 12.34)\n",
 		},
 		"env": {
 			"",
@@ -371,7 +401,8 @@ func TestFloat64(t *testing.T) {
 			"value",
 			12.34,
 			"Test flag",
-			"Usage of Float64:\n  -value float\n    \t[cli] Test flag {FLOAT64_VALUE} (default 34.56)\n",
+			"",
+			"Usage of Float64:\n  -value float\n    \t[cli] Test flag ${FLOAT64_VALUE} (default 34.56)\n",
 		},
 		"invalid env": {
 			"",
@@ -379,7 +410,8 @@ func TestFloat64(t *testing.T) {
 			"invalidValue",
 			12.34,
 			"Test flag",
-			"Usage of Float64:\n  -invalidValue float\n    \t[cli] Test flag {FLOAT64_INVALID_VALUE} (default 12.34)\n",
+			"",
+			"Usage of Float64:\n  -invalidValue float\n    \t[cli] Test flag ${FLOAT64_INVALID_VALUE} (default 12.34)\n",
 		},
 	}
 
@@ -389,7 +421,7 @@ func TestFloat64(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Float64", flag.ContinueOnError)
-			Float64(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
+			Float64(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.env, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -409,6 +441,7 @@ func TestBool(t *testing.T) {
 		name         string
 		defaultValue bool
 		label        string
+		env          string
 		want         string
 	}{
 		"simple": {
@@ -417,7 +450,8 @@ func TestBool(t *testing.T) {
 			"test",
 			false,
 			"Test flag",
-			"Usage of Bool:\n  -test\n    \t[cli] Test flag {BOOL_TEST}\n",
+			"",
+			"Usage of Bool:\n  -test\n    \t[cli] Test flag ${BOOL_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -425,7 +459,8 @@ func TestBool(t *testing.T) {
 			"test",
 			true,
 			"Test flag",
-			"Usage of Bool:\n  -contextTest\n    \t[context] Test flag {BOOL_CONTEXT_TEST} (default true)\n",
+			"",
+			"Usage of Bool:\n  -contextTest\n    \t[context] Test flag ${BOOL_CONTEXT_TEST} (default true)\n",
 		},
 		"env": {
 			"",
@@ -433,7 +468,8 @@ func TestBool(t *testing.T) {
 			"value",
 			true,
 			"Test flag",
-			"Usage of Bool:\n  -value\n    \t[cli] Test flag {BOOL_VALUE}\n",
+			"",
+			"Usage of Bool:\n  -value\n    \t[cli] Test flag ${BOOL_VALUE}\n",
 		},
 		"invalid env": {
 			"",
@@ -441,7 +477,8 @@ func TestBool(t *testing.T) {
 			"invalidValue",
 			true,
 			"Test flag",
-			"Usage of Bool:\n  -invalidValue\n    \t[cli] Test flag {BOOL_INVALID_VALUE} (default true)\n",
+			"",
+			"Usage of Bool:\n  -invalidValue\n    \t[cli] Test flag ${BOOL_INVALID_VALUE} (default true)\n",
 		},
 	}
 
@@ -451,7 +488,7 @@ func TestBool(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Bool", flag.ContinueOnError)
-			Bool(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
+			Bool(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.env, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -471,6 +508,7 @@ func TestDuration(t *testing.T) {
 		name         string
 		defaultValue time.Duration
 		label        string
+		env          string
 		want         string
 	}{
 		"simple": {
@@ -479,7 +517,8 @@ func TestDuration(t *testing.T) {
 			"test",
 			0,
 			"Test flag",
-			"Usage of Duration:\n  -test duration\n    \t[cli] Test flag {DURATION_TEST}\n",
+			"",
+			"Usage of Duration:\n  -test duration\n    \t[cli] Test flag ${DURATION_TEST}\n",
 		},
 		"with prefix": {
 			"context",
@@ -487,7 +526,8 @@ func TestDuration(t *testing.T) {
 			"test",
 			time.Minute,
 			"Test flag",
-			"Usage of Duration:\n  -contextTest duration\n    \t[context] Test flag {DURATION_CONTEXT_TEST} (default 1m0s)\n",
+			"",
+			"Usage of Duration:\n  -contextTest duration\n    \t[context] Test flag ${DURATION_CONTEXT_TEST} (default 1m0s)\n",
 		},
 		"env": {
 			"",
@@ -495,7 +535,8 @@ func TestDuration(t *testing.T) {
 			"value",
 			time.Minute,
 			"Test flag",
-			"Usage of Duration:\n  -value duration\n    \t[cli] Test flag {DURATION_VALUE} (default 1s)\n",
+			"",
+			"Usage of Duration:\n  -value duration\n    \t[cli] Test flag ${DURATION_VALUE} (default 1s)\n",
 		},
 		"invalid env": {
 			"",
@@ -503,7 +544,8 @@ func TestDuration(t *testing.T) {
 			"invalidValue",
 			time.Minute,
 			"Test flag",
-			"Usage of Duration:\n  -invalidValue duration\n    \t[cli] Test flag {DURATION_INVALID_VALUE} (default 1m0s)\n",
+			"",
+			"Usage of Duration:\n  -invalidValue duration\n    \t[cli] Test flag ${DURATION_INVALID_VALUE} (default 1m0s)\n",
 		},
 	}
 
@@ -513,7 +555,7 @@ func TestDuration(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Duration", flag.ContinueOnError)
-			Duration(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
+			Duration(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.env, tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)
@@ -533,6 +575,7 @@ func TestStringSlice(t *testing.T) {
 		name         string
 		defaultValue []string
 		label        string
+		env          string
 		want         string
 	}{
 		"simple": {
@@ -541,7 +584,8 @@ func TestStringSlice(t *testing.T) {
 			"test",
 			nil,
 			"Test flag",
-			"Usage of Values:\n  -test string slice\n    \t[cli] Test flag {VALUES_TEST}, as a string slice\n",
+			"",
+			"Usage of Values:\n  -test string slice\n    \t[cli] Test flag ${VALUES_TEST}, as a string slice, environment variable separated by \",\"\n",
 		},
 		"with prefix": {
 			"context",
@@ -549,7 +593,8 @@ func TestStringSlice(t *testing.T) {
 			"test",
 			[]string{"value"},
 			"Test flag",
-			"Usage of Values:\n  -contextTest string slice\n    \t[context] Test flag {VALUES_CONTEXT_TEST}, as a string slice (default [value])\n",
+			"",
+			"Usage of Values:\n  -contextTest string slice\n    \t[context] Test flag ${VALUES_CONTEXT_TEST}, as a string slice, environment variable separated by \",\" (default [value])\n",
 		},
 		"env": {
 			"",
@@ -557,7 +602,8 @@ func TestStringSlice(t *testing.T) {
 			"value",
 			[]string{"value"},
 			"Test flag",
-			"Usage of Values:\n  -value string slice\n    \t[cli] Test flag {VALUES_VALUE}, as a string slice (default [overriden])\n",
+			"",
+			"Usage of Values:\n  -value string slice\n    \t[cli] Test flag ${VALUES_VALUE}, as a string slice, environment variable separated by \",\" (default [overriden])\n",
 		},
 	}
 
@@ -566,7 +612,7 @@ func TestStringSlice(t *testing.T) {
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Values", flag.ContinueOnError)
-			StringSlice(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.defaultValue, nil)
+			StringSlice(fs, tc.prefix, tc.docPrefix, tc.name, "", tc.label, tc.env, ",", tc.defaultValue, nil)
 
 			var writer strings.Builder
 			fs.SetOutput(&writer)

@@ -26,17 +26,14 @@ func changeFirstCase(s string, upper bool) string {
 	return string(a)
 }
 
-// FirstUpperCase change first letter to UpperCase
-func FirstUpperCase(s string) string {
+func firstUpperCase(s string) string {
 	return changeFirstCase(s, true)
 }
 
-// FirstLowerCase change first letter to lowerCase
-func FirstLowerCase(s string) string {
+func firstLowerCase(s string) string {
 	return changeFirstCase(s, false)
 }
 
-// SnakeCase transform camelCase to snake_case
 func SnakeCase(s string) string {
 	if len(s) == 0 {
 		return s
