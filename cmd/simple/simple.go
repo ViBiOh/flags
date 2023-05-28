@@ -16,6 +16,7 @@ import (
 
 func main() {
 	fs := flag.NewFlagSet("my-cli", flag.ExitOnError)
+	fs.Usage = flags.Usage(fs)
 
 	address := flags.New("address", "Listen address").DocPrefix("server").String(fs, "", nil)
 	port := flags.New("port", "Listen port (0 to disable)").Shorthand("p").DocPrefix("server").Uint(fs, 1080, nil)

@@ -38,6 +38,7 @@ func databaseFlags(fs *flag.FlagSet, prefix string, overrides ...flags.Override)
 
 func main() {
 	fs := flag.NewFlagSet("my-cli", flag.ExitOnError)
+	fs.Usage = flags.Usage(fs)
 
 	mainConfig := databaseFlags(fs, "")
 	replicaConfig := databaseFlags(fs, "replica", flags.NewOverride("Name", "user-replica"))
