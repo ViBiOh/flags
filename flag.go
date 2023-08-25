@@ -11,9 +11,17 @@ import (
 
 // String creates a string flag
 func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value string, overrides []Override) *string {
+	output := new(string)
+
+	StringVar(fs, output, prefix, docPrefix, name, shorthand, label, env, value, overrides)
+
+	return output
+}
+
+// StringVar bind a string flag
+func StringVar(fs *flag.FlagSet, output *string, prefix, docPrefix, name, shorthand, label, env string, value string, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
-	output := new(string)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (string, error) {
 		return input, nil
 	})
@@ -23,15 +31,21 @@ func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env str
 	}
 
 	fs.StringVar(output, firstLowerCase(flagName), initialValue, usage)
-
-	return output
 }
 
 // Int creates an int flag
 func Int(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value int, overrides []Override) *int {
+	output := new(int)
+
+	IntVar(fs, output, prefix, docPrefix, name, shorthand, label, env, value, overrides)
+
+	return output
+}
+
+// IntVar bind an int flag
+func IntVar(fs *flag.FlagSet, output *int, prefix, docPrefix, name, shorthand, label, env string, value int, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
-	output := new(int)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (int, error) {
 		intVal, err := strconv.ParseInt(input, 10, 32)
 		return int(intVal), err
@@ -42,15 +56,21 @@ func Int(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string
 	}
 
 	fs.IntVar(output, firstLowerCase(flagName), initialValue, usage)
-
-	return output
 }
 
 // Int64 creates an int64 flag
 func Int64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value int64, overrides []Override) *int64 {
+	output := new(int64)
+
+	Int64Var(fs, output, prefix, docPrefix, name, shorthand, label, env, value, overrides)
+
+	return output
+}
+
+// Int64Var bind an int64 flag
+func Int64Var(fs *flag.FlagSet, output *int64, prefix, docPrefix, name, shorthand, label, env string, value int64, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
-	output := new(int64)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (int64, error) {
 		return strconv.ParseInt(input, 10, 64)
 	})
@@ -60,15 +80,21 @@ func Int64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env stri
 	}
 
 	fs.Int64Var(output, firstLowerCase(flagName), initialValue, usage)
-
-	return output
 }
 
 // Uint creates an uint flag
 func Uint(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value uint, overrides []Override) *uint {
+	output := new(uint)
+
+	UintVar(fs, output, prefix, docPrefix, name, shorthand, label, env, value, overrides)
+
+	return output
+}
+
+// UintVar bind an uint flag
+func UintVar(fs *flag.FlagSet, output *uint, prefix, docPrefix, name, shorthand, label, env string, value uint, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
-	output := new(uint)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (uint, error) {
 		intVal, err := strconv.ParseUint(input, 10, 32)
 		return uint(intVal), err
@@ -79,15 +105,21 @@ func Uint(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env strin
 	}
 
 	fs.UintVar(output, firstLowerCase(flagName), initialValue, usage)
-
-	return output
 }
 
 // Uint64 creates an uint64 flag
 func Uint64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value uint64, overrides []Override) *uint64 {
+	output := new(uint64)
+
+	Uint64Var(fs, output, prefix, docPrefix, name, shorthand, label, env, value, overrides)
+
+	return output
+}
+
+// Uint64Var binds an uint64 flag
+func Uint64Var(fs *flag.FlagSet, output *uint64, prefix, docPrefix, name, shorthand, label, env string, value uint64, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
-	output := new(uint64)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (uint64, error) {
 		return strconv.ParseUint(input, 10, 64)
 	})
@@ -97,15 +129,21 @@ func Uint64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env str
 	}
 
 	fs.Uint64Var(output, firstLowerCase(flagName), initialValue, usage)
-
-	return output
 }
 
 // Float64 creates a float64 flag
 func Float64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value float64, overrides []Override) *float64 {
+	output := new(float64)
+
+	Float64Var(fs, output, prefix, docPrefix, name, shorthand, label, env, value, overrides)
+
+	return output
+}
+
+// Float64Var binds a float64 flag
+func Float64Var(fs *flag.FlagSet, output *float64, prefix, docPrefix, name, shorthand, label, env string, value float64, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
-	output := new(float64)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (float64, error) {
 		return strconv.ParseFloat(input, 64)
 	})
@@ -115,15 +153,21 @@ func Float64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env st
 	}
 
 	fs.Float64Var(output, firstLowerCase(flagName), initialValue, usage)
-
-	return output
 }
 
 // Bool creates a bool flag
 func Bool(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value bool, overrides []Override) *bool {
+	output := new(bool)
+
+	BoolVar(fs, output, prefix, docPrefix, name, shorthand, label, env, value, overrides)
+
+	return output
+}
+
+// BoolVar binds a bool flag
+func BoolVar(fs *flag.FlagSet, output *bool, prefix, docPrefix, name, shorthand, label, env string, value bool, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
-	output := new(bool)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, strconv.ParseBool)
 
 	if len(shorthand) > 0 {
@@ -131,15 +175,21 @@ func Bool(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env strin
 	}
 
 	fs.BoolVar(output, firstLowerCase(flagName), initialValue, usage)
-
-	return output
 }
 
 // Duration creates a duration flag
 func Duration(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value time.Duration, overrides []Override) *time.Duration {
+	output := new(time.Duration)
+
+	DurationVar(fs, output, prefix, docPrefix, name, shorthand, label, env, value, overrides)
+
+	return output
+}
+
+// DurationVar binds a duration flag
+func DurationVar(fs *flag.FlagSet, output *time.Duration, prefix, docPrefix, name, shorthand, label, env string, value time.Duration, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
-	output := new(time.Duration)
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, time.ParseDuration)
 
 	if len(shorthand) > 0 {
@@ -147,8 +197,6 @@ func Duration(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env s
 	}
 
 	fs.DurationVar(output, firstLowerCase(flagName), initialValue, usage)
-
-	return output
 }
 
 func computeDescription(fs *flag.FlagSet, prefix, docPrefix, name, label, env string) (string, string, string) {

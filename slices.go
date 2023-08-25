@@ -42,11 +42,20 @@ func (i *stringSlice) Set(value string) error {
 }
 
 // StringSlice creates a string slice flag
-func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env, envSeparator string, value []string, overrides []Override) *[]string {
+func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []string, overrides []Override) *[]string {
+	output := new([]string)
+
+	StringSliceVar(fs, output, prefix, docPrefix, name, shorthand, label, env, envSeparator, values, overrides)
+
+	return output
+}
+
+// StringSliceVar binds a string slice flag
+func StringSliceVar(fs *flag.FlagSet, output *[]string, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []string, overrides []Override) {
 	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 	usage := formatLabel(prefix, docPrefix, label, envName) + fmt.Sprintf(", as a `string slice`, environment variable separated by %q", envSeparator)
 
-	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) ([]string, error) {
+	initialValue := defaultValue(defaultStaticValue(name, values, overrides), envName, func(input string) ([]string, error) {
 		if len(input) == 0 {
 			return []string{}, nil
 		}
@@ -54,7 +63,6 @@ func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, en
 		return strings.Split(input, envSeparator), nil
 	})
 
-	output := new([]string)
 	targetOutput := newStringSlice(initialValue, output)
 
 	if len(shorthand) > 0 {
@@ -62,6 +70,4 @@ func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, en
 	}
 
 	fs.Var(targetOutput, firstLowerCase(flagName), usage)
-
-	return output
 }
