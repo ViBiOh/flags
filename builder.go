@@ -88,3 +88,39 @@ func (b Builder) Duration(fs *flag.FlagSet, value time.Duration, overrides []Ove
 func (b Builder) StringSlice(fs *flag.FlagSet, value []string, overrides []Override) *[]string {
 	return StringSlice(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, value, overrides)
 }
+
+func (b Builder) StringVar(fs *flag.FlagSet, output *string, value string, overrides []Override) {
+	StringVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+}
+
+func (b Builder) IntVar(fs *flag.FlagSet, output *int, value int, overrides []Override) {
+	IntVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+}
+
+func (b Builder) Int64Var(fs *flag.FlagSet, output *int64, value int64, overrides []Override) {
+	Int64Var(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+}
+
+func (b Builder) UintVar(fs *flag.FlagSet, output *uint, value uint, overrides []Override) {
+	UintVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+}
+
+func (b Builder) Uint64Var(fs *flag.FlagSet, output *uint64, value uint64, overrides []Override) {
+	Uint64Var(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+}
+
+func (b Builder) Float64Var(fs *flag.FlagSet, output *float64, value float64, overrides []Override) {
+	Float64Var(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+}
+
+func (b Builder) BoolVar(fs *flag.FlagSet, output *bool, value bool, overrides []Override) {
+	BoolVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+}
+
+func (b Builder) DurationVar(fs *flag.FlagSet, output *time.Duration, value time.Duration, overrides []Override) {
+	DurationVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+}
+
+func (b Builder) StringSliceVar(fs *flag.FlagSet, output *[]string, value []string, overrides []Override) {
+	StringSliceVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, value, overrides)
+}
