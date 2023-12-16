@@ -96,3 +96,91 @@ func TestStringSlice(t *testing.T) {
 		})
 	}
 }
+
+func TestFloat64Slice(t *testing.T) {
+	type args struct {
+		defaultValue []float64
+		overrides    []flags.Override
+		args         []string
+	}
+
+	cases := map[string]struct {
+		builder   flags.Builder
+		preTest   func()
+		args      args
+		want      []float64
+		wantUsage string
+	}{
+		"simple": {
+			flags.New("coord", "LatLng"),
+			nil,
+			args{},
+			nil,
+			"Usage of Float64Slice:\n  --coord  float64 slice  LatLng ${FLOAT64_SLICE_COORD}, as a float64 slice, environment variable separated by \",\"\n",
+		},
+		"with default value": {
+			flags.New("coordinates", "Coordinates").Prefix("start"),
+			nil,
+			args{
+				defaultValue: []float64{1.2, 3.4},
+			},
+			[]float64{1.2, 3.4},
+			"Usage of Float64Slice:\n  --startCoordinates  float64 slice  [start] Coordinates ${FLOAT64_SLICE_START_COORDINATES}, as a float64 slice, environment variable separated by \",\" (default [1.200000, 3.400000])\n",
+		},
+		"with read from environment variable": {
+			flags.New("coordinates", "Coordinates").Prefix("start").EnvSeparator("|"),
+			func() {
+				t.Setenv("FLOAT64_SLICE_START_COORDINATES", "5.6|7.8")
+			},
+			args{
+				defaultValue: []float64{1.2, 3.4},
+			},
+			[]float64{5.6, 7.8},
+			"Usage of Float64Slice:\n  --startCoordinates  float64 slice  [start] Coordinates ${FLOAT64_SLICE_START_COORDINATES}, as a float64 slice, environment variable separated by \"|\" (default [5.600000, 7.800000])\n",
+		},
+		"with shorthand and args": {
+			flags.New("position", "GPS Position").Shorthand("g"),
+			nil,
+			args{
+				defaultValue: []float64{1.2, 3, 4},
+				args:         []string{"-g", "7.8", "--position", "5.6"},
+			},
+			[]float64{7.8, 5.6},
+			"Usage of Float64Slice:\n  -g, --position  float64 slice  GPS Position ${FLOAT64_SLICE_POSITION}, as a float64 slice, environment variable separated by \",\" (default [1.200000, 3.000000, 4.000000])\n",
+		},
+		"with env": {
+			flags.New("coordinates", "Coordinates"),
+			func() {
+				t.Setenv("FLOAT64_SLICE_COORDINATES", "5.6,7.8")
+			},
+			args{
+				defaultValue: []float64{1.2, 3.4},
+			},
+			[]float64{5.6, 7.8},
+			"Usage of Float64Slice:\n  --coordinates  float64 slice  Coordinates ${FLOAT64_SLICE_COORDINATES}, as a float64 slice, environment variable separated by \",\" (default [5.600000, 7.800000])\n",
+		},
+	}
+
+	for intention, testCase := range cases {
+		intention, testCase := intention, testCase
+
+		t.Run(intention, func(t *testing.T) {
+			fs := flag.NewFlagSet("Float64Slice", flag.ContinueOnError)
+			fs.Usage = flags.Usage(fs)
+
+			var writer strings.Builder
+			fs.SetOutput(&writer)
+
+			if testCase.preTest != nil {
+				testCase.preTest()
+			}
+
+			got := testCase.builder.Float64Slice(fs, testCase.args.defaultValue, testCase.args.overrides)
+			fs.Usage()
+
+			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.Equal(t, testCase.want, *got)
+			assert.Equal(t, testCase.wantUsage, writer.String())
+		})
+	}
+}

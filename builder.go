@@ -77,6 +77,10 @@ func (b Builder) Float64(fs *flag.FlagSet, value float64, overrides []Override) 
 	return Float64(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
 }
 
+func (b Builder) Float64Slice(fs *flag.FlagSet, value []float64, overrides []Override) *[]float64 {
+	return Float64Slice(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, value, overrides)
+}
+
 func (b Builder) Bool(fs *flag.FlagSet, value bool, overrides []Override) *bool {
 	return Bool(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
 }
@@ -123,4 +127,8 @@ func (b Builder) DurationVar(fs *flag.FlagSet, output *time.Duration, value time
 
 func (b Builder) StringSliceVar(fs *flag.FlagSet, output *[]string, value []string, overrides []Override) {
 	StringSliceVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, value, overrides)
+}
+
+func (b Builder) Float64SliceVar(fs *flag.FlagSet, output *[]float64, value []float64, overrides []Override) {
+	Float64SliceVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, value, overrides)
 }
