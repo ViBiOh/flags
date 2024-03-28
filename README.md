@@ -2,7 +2,6 @@
 
 [![Build](https://github.com/ViBiOh/flags/workflows/Build/badge.svg)](https://github.com/ViBiOh/flags/actions)
 [![codecov](https://codecov.io/gh/ViBiOh/flags/branch/main/graph/badge.svg)](https://codecov.io/gh/ViBiOh/flags)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ViBiOh_flags&metric=alert_status)](https://sonarcloud.io/dashboard?id=ViBiOh_flags)
 
 Golang flags parser with zero dependency.
 
