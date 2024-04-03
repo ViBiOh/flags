@@ -74,8 +74,6 @@ func TestStringSlice(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("StringSlice", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)
@@ -162,8 +160,6 @@ func TestFloat64Slice(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Float64Slice", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)

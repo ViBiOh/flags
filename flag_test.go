@@ -138,8 +138,6 @@ func TestString(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("String", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)
@@ -191,8 +189,6 @@ func TestInt(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Int", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)
@@ -244,8 +240,6 @@ func TestInt64(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Int64", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)
@@ -297,8 +291,6 @@ func TestUInt(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("UInt", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)
@@ -350,8 +342,6 @@ func TestUInt64(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("UInt64", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)
@@ -403,8 +393,6 @@ func TestFloat64(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Float64", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)
@@ -456,8 +444,6 @@ func TestBool(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Bool", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)
@@ -509,8 +495,6 @@ func TestDuration(t *testing.T) {
 	}
 
 	for intention, testCase := range cases {
-		intention, testCase := intention, testCase
-
 		t.Run(intention, func(t *testing.T) {
 			fs := flag.NewFlagSet("Duration", flag.ContinueOnError)
 			fs.Usage = flags.Usage(fs)
