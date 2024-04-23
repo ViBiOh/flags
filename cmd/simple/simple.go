@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/ViBiOh/flags"
@@ -24,9 +23,7 @@ func main() {
 
 	fs.Usage = flags.Usage(fs)
 
-	if err := fs.Parse(os.Args[1:]); err != nil {
-		log.Fatal(err)
-	}
+	_ = fs.Parse(os.Args[1:])
 
 	fmt.Printf("address=`%s`\n", *address)
 	fmt.Printf("port=%d\n", *port)

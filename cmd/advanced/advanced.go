@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -45,9 +44,7 @@ func main() {
 
 	fs.Usage = flags.Usage(fs)
 
-	if err := fs.Parse(os.Args[1:]); err != nil {
-		log.Fatal(err)
-	}
+	_ = fs.Parse(os.Args[1:])
 
 	fmt.Printf("Main name=`%s`\n", *mainConfig.name)
 	fmt.Printf("Replica name=`%s`\n", *replicaConfig.name)
