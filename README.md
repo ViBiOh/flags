@@ -1,7 +1,6 @@
 # flags
 
 [![Build](https://github.com/ViBiOh/flags/workflows/Build/badge.svg)](https://github.com/ViBiOh/flags/actions)
-[![codecov](https://codecov.io/gh/ViBiOh/flags/branch/main/graph/badge.svg)](https://codecov.io/gh/ViBiOh/flags)
 
 Golang flags parser with zero dependency.
 
