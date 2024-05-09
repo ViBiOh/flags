@@ -2,13 +2,13 @@ package flags
 
 import "strings"
 
-// Override is an override of default value
+// Override is an override of default value.
 type Override struct {
 	value any
 	name  string
 }
 
-// NewOverride create a default override value
+// NewOverride create a default override value.
 func NewOverride(name string, value any) Override {
 	return Override{
 		name:  name,

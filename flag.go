@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// String creates a string flag
+// String creates a string flag.
 func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value string, overrides []Override) *string {
 	output := new(string)
 
@@ -18,7 +18,7 @@ func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env str
 	return output
 }
 
-// StringVar bind a string flag
+// StringVar bind a string flag.
 func StringVar(fs *flag.FlagSet, output *string, prefix, docPrefix, name, shorthand, label, env string, value string, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
@@ -33,7 +33,7 @@ func StringVar(fs *flag.FlagSet, output *string, prefix, docPrefix, name, shorth
 	fs.StringVar(output, firstLowerCase(flagName), initialValue, usage)
 }
 
-// Int creates an int flag
+// Int creates an int flag.
 func Int(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value int, overrides []Override) *int {
 	output := new(int)
 
@@ -42,7 +42,7 @@ func Int(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string
 	return output
 }
 
-// IntVar bind an int flag
+// IntVar bind an int flag.
 func IntVar(fs *flag.FlagSet, output *int, prefix, docPrefix, name, shorthand, label, env string, value int, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
@@ -58,7 +58,7 @@ func IntVar(fs *flag.FlagSet, output *int, prefix, docPrefix, name, shorthand, l
 	fs.IntVar(output, firstLowerCase(flagName), initialValue, usage)
 }
 
-// Int64 creates an int64 flag
+// Int64 creates an int64 flag.
 func Int64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value int64, overrides []Override) *int64 {
 	output := new(int64)
 
@@ -67,7 +67,7 @@ func Int64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env stri
 	return output
 }
 
-// Int64Var bind an int64 flag
+// Int64Var bind an int64 flag.
 func Int64Var(fs *flag.FlagSet, output *int64, prefix, docPrefix, name, shorthand, label, env string, value int64, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
@@ -82,7 +82,7 @@ func Int64Var(fs *flag.FlagSet, output *int64, prefix, docPrefix, name, shorthan
 	fs.Int64Var(output, firstLowerCase(flagName), initialValue, usage)
 }
 
-// Uint creates an uint flag
+// Uint creates an uint flag.
 func Uint(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value uint, overrides []Override) *uint {
 	output := new(uint)
 
@@ -91,7 +91,7 @@ func Uint(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env strin
 	return output
 }
 
-// UintVar bind an uint flag
+// UintVar bind an uint flag.
 func UintVar(fs *flag.FlagSet, output *uint, prefix, docPrefix, name, shorthand, label, env string, value uint, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
@@ -107,7 +107,7 @@ func UintVar(fs *flag.FlagSet, output *uint, prefix, docPrefix, name, shorthand,
 	fs.UintVar(output, firstLowerCase(flagName), initialValue, usage)
 }
 
-// Uint64 creates an uint64 flag
+// Uint64 creates an uint64 flag.
 func Uint64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value uint64, overrides []Override) *uint64 {
 	output := new(uint64)
 
@@ -116,7 +116,7 @@ func Uint64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env str
 	return output
 }
 
-// Uint64Var binds an uint64 flag
+// Uint64Var binds an uint64 flag.
 func Uint64Var(fs *flag.FlagSet, output *uint64, prefix, docPrefix, name, shorthand, label, env string, value uint64, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
@@ -131,7 +131,7 @@ func Uint64Var(fs *flag.FlagSet, output *uint64, prefix, docPrefix, name, shorth
 	fs.Uint64Var(output, firstLowerCase(flagName), initialValue, usage)
 }
 
-// Float64 creates a float64 flag
+// Float64 creates a float64 flag.
 func Float64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value float64, overrides []Override) *float64 {
 	output := new(float64)
 
@@ -140,7 +140,7 @@ func Float64(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env st
 	return output
 }
 
-// Float64Var binds a float64 flag
+// Float64Var binds a float64 flag.
 func Float64Var(fs *flag.FlagSet, output *float64, prefix, docPrefix, name, shorthand, label, env string, value float64, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
@@ -155,7 +155,7 @@ func Float64Var(fs *flag.FlagSet, output *float64, prefix, docPrefix, name, shor
 	fs.Float64Var(output, firstLowerCase(flagName), initialValue, usage)
 }
 
-// Bool creates a bool flag
+// Bool creates a bool flag.
 func Bool(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value bool, overrides []Override) *bool {
 	output := new(bool)
 
@@ -164,7 +164,7 @@ func Bool(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env strin
 	return output
 }
 
-// BoolVar binds a bool flag
+// BoolVar binds a bool flag.
 func BoolVar(fs *flag.FlagSet, output *bool, prefix, docPrefix, name, shorthand, label, env string, value bool, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
@@ -177,7 +177,7 @@ func BoolVar(fs *flag.FlagSet, output *bool, prefix, docPrefix, name, shorthand,
 	fs.BoolVar(output, firstLowerCase(flagName), initialValue, usage)
 }
 
-// Duration creates a duration flag
+// Duration creates a duration flag.
 func Duration(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value time.Duration, overrides []Override) *time.Duration {
 	output := new(time.Duration)
 
@@ -186,7 +186,7 @@ func Duration(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env s
 	return output
 }
 
-// DurationVar binds a duration flag
+// DurationVar binds a duration flag.
 func DurationVar(fs *flag.FlagSet, output *time.Duration, prefix, docPrefix, name, shorthand, label, env string, value time.Duration, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 

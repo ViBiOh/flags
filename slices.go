@@ -42,7 +42,7 @@ func (i *stringSlice) Set(value string) error {
 	return nil
 }
 
-// StringSlice creates a string slice flag
+// StringSlice creates a string slice flag.
 func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []string, overrides []Override) *[]string {
 	output := new([]string)
 
@@ -51,7 +51,7 @@ func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, en
 	return output
 }
 
-// StringSliceVar binds a string slice flag
+// StringSliceVar binds a string slice flag.
 func StringSliceVar(fs *flag.FlagSet, output *[]string, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []string, overrides []Override) {
 	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 	usage := formatLabel(prefix, docPrefix, label, envName) + fmt.Sprintf(", as a `string slice`, environment variable separated by %q", envSeparator)
@@ -122,7 +122,7 @@ func (i *float64Slice) Set(value string) error {
 	return nil
 }
 
-// Float64Slice creates a string slice flag
+// Float64Slice creates a string slice flag.
 func Float64Slice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []float64, overrides []Override) *[]float64 {
 	output := new([]float64)
 
@@ -131,7 +131,7 @@ func Float64Slice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, e
 	return output
 }
 
-// Float64SliceVar binds a string slice flag
+// Float64SliceVar binds a string slice flag.
 func Float64SliceVar(fs *flag.FlagSet, output *[]float64, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []float64, overrides []Override) {
 	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 	usage := formatLabel(prefix, docPrefix, label, envName) + fmt.Sprintf(", as a `float64 slice`, environment variable separated by %q", envSeparator)
