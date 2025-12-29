@@ -47,9 +47,9 @@ func Usage(fs *flag.FlagSet) func() {
 		output := fs.Output()
 
 		if name := fs.Name(); len(name) > 0 {
-			fmt.Fprintf(output, "Usage of %s:\n", fs.Name())
+			_, _ = fmt.Fprintf(output, "Usage of %s:\n", fs.Name())
 		} else {
-			fmt.Fprint(output, "Usage:\n")
+			_, _ = fmt.Fprint(output, "Usage:\n")
 		}
 
 		items := make([]*Flag, 0, len(flags))
@@ -84,20 +84,20 @@ func Usage(fs *flag.FlagSet) func() {
 			flagType, usage := flag.UnquoteUsage(item.flag)
 
 			if len(item.shorthand) > 0 {
-				fmt.Fprintf(output, fmt.Sprintf("  %%-%ds--%%-%ds  %%-%ds  %%s", maxShorthandLen, maxNameLen, maxTypeLen), fmt.Sprintf("-%s, ", item.shorthand), item.name, flagType, usage)
+				_, _ = fmt.Fprintf(output, fmt.Sprintf("  %%-%ds--%%-%ds  %%-%ds  %%s", maxShorthandLen, maxNameLen, maxTypeLen), fmt.Sprintf("-%s, ", item.shorthand), item.name, flagType, usage)
 			} else {
-				fmt.Fprintf(output, fmt.Sprintf("  %%-%ds--%%-%ds  %%-%ds  %%s", maxShorthandLen, maxNameLen, maxTypeLen), "", item.name, flagType, usage)
+				_, _ = fmt.Fprintf(output, fmt.Sprintf("  %%-%ds--%%-%ds  %%-%ds  %%s", maxShorthandLen, maxNameLen, maxTypeLen), "", item.name, flagType, usage)
 			}
 
 			if defaultValue := item.flag.DefValue; len(defaultValue) > 0 {
 				if flagType == "string" {
-					fmt.Fprintf(output, " (default %q)", defaultValue)
+					_, _ = fmt.Fprintf(output, " (default %q)", defaultValue)
 				} else {
-					fmt.Fprintf(output, " (default %v)", defaultValue)
+					_, _ = fmt.Fprintf(output, " (default %v)", defaultValue)
 				}
 			}
 
-			fmt.Fprint(output, "\n")
+			_, _ = fmt.Fprint(output, "\n")
 		}
 	}
 }
