@@ -10,7 +10,7 @@ import (
 )
 
 // String creates a string flag.
-func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string, value string, overrides []Override) *string {
+func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env, value string, overrides []Override) *string {
 	output := new(string)
 
 	StringVar(fs, output, prefix, docPrefix, name, shorthand, label, env, value, overrides)
@@ -19,7 +19,7 @@ func String(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env str
 }
 
 // StringVar bind a string flag.
-func StringVar(fs *flag.FlagSet, output *string, prefix, docPrefix, name, shorthand, label, env string, value string, overrides []Override) {
+func StringVar(fs *flag.FlagSet, output *string, prefix, docPrefix, name, shorthand, label, env, value string, overrides []Override) {
 	flagName, envName, usage := computeDescription(fs, prefix, docPrefix, name, label, env)
 
 	initialValue := defaultValue(defaultStaticValue(name, value, overrides), envName, func(input string) (string, error) {
