@@ -3,6 +3,7 @@ package flags
 import (
 	"flag"
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -13,7 +14,7 @@ type stringSlice struct {
 }
 
 func newStringSlice(val []string, p *[]string) *stringSlice {
-	*p = val
+	*p = slices.Clone(val)
 
 	return &stringSlice{values: p}
 }
@@ -66,7 +67,7 @@ func StringSliceVar(fs *flag.FlagSet, output *[]string, prefix, docPrefix, name,
 
 	fs.Var(targetOutput, firstLowerCase(flagName), usage)
 
-	*output = defaultValue(staticValue, envName, func(input string) ([]string, error) {
+	*output = defaultValue(*output, envName, func(input string) ([]string, error) {
 		if len(input) == 0 {
 			return []string{}, nil
 		}
@@ -81,7 +82,7 @@ type float64Slice struct {
 }
 
 func newfloat64Slice(val []float64, p *[]float64) *float64Slice {
-	*p = val
+	*p = slices.Clone(val)
 
 	return &float64Slice{values: p}
 }
@@ -148,7 +149,7 @@ func Float64SliceVar(fs *flag.FlagSet, output *[]float64, prefix, docPrefix, nam
 
 	fs.Var(targetOutput, firstLowerCase(flagName), usage)
 
-	*output = defaultValue(staticValue, envName, func(input string) ([]float64, error) {
+	*output = defaultValue(*output, envName, func(input string) ([]float64, error) {
 		if len(input) == 0 {
 			return []float64{}, nil
 		}
