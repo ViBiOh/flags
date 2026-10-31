@@ -4,12 +4,9 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"regexp"
 	"strings"
 	"unicode"
 )
-
-var upperCaseRegex = regexp.MustCompile(`(?m)([A-Z])([A-Z]*)`)
 
 func changeFirstCase(s string, upper bool) string {
 	if len(s) == 0 {
@@ -35,16 +32,44 @@ func firstLowerCase(s string) string {
 }
 
 func SnakeCase(s string) string {
-	if len(s) == 0 {
-		return s
+	runes := []rune(s)
+
+	var builder strings.Builder
+
+	builder.Grow(len(s) + len(s)/4)
+
+	for index, char := range runes {
+		switch {
+		case char == '-':
+			builder.WriteByte('_')
+		case isWordStart(runes, index):
+			builder.WriteByte('_')
+			builder.WriteRune(char)
+		default:
+			builder.WriteRune(char)
+		}
 	}
 
-	snaked := upperCaseRegex.ReplaceAllString(s, "_$1$2")
-	if snaked[0] == '_' {
-		snaked = snaked[1:]
+	return strings.ReplaceAll(builder.String(), "__", "_")
+}
+
+// An upper case letter starts a word unless it continues an acronym ("URL"),
+// where only the last capital before a lower case letter does ("URLPath").
+func isWordStart(runes []rune, index int) bool {
+	if index == 0 || !unicode.IsUpper(runes[index]) {
+		return false
 	}
 
-	return strings.ReplaceAll(strings.ReplaceAll(snaked, "-", "_"), "__", "_")
+	previous := runes[index-1]
+
+	switch {
+	case previous == '-' || previous == '_':
+		return false
+	case unicode.IsUpper(previous):
+		return index+1 < len(runes) && unicode.IsLower(runes[index+1])
+	default:
+		return true
+	}
 }
 
 func Sha(content string) string {

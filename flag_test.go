@@ -99,6 +99,15 @@ func TestString(t *testing.T) {
 			"Bill",
 			"Usage of String:\n  --pseudo  string  Pseudo of people ${STRING_PSEUDO} (default \"Jane\")\n",
 		},
+		"with acronym in env variable naming": {
+			flags.New("apiURLPath", "Path of the API"),
+			func() {
+				t.Setenv("STRING_API_URL_PATH", "/v1")
+			},
+			args{},
+			"/v1",
+			"Usage of String:\n  --apiURLPath  string  Path of the API ${STRING_API_URL_PATH}\n",
+		},
 		"with camelCase to SNAKE_CASE env variable naming": {
 			flags.New("fullName", "Fullname of people"),
 			func() {
