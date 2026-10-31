@@ -73,10 +73,10 @@ func TestString(t *testing.T) {
 				t.Setenv("STRING_NICKNAME", "John")
 			},
 			args{
-				overrides: []flags.Override{flags.NewOverride("name", "Jane")},
+				overrides: []flags.Override{flags.NewOverride("nickname", "Jane")},
 			},
 			"John",
-			"Usage of String:\n  --nickname  string  Nickname of people ${STRING_NICKNAME}\n",
+			"Usage of String:\n  --nickname  string  Nickname of people ${STRING_NICKNAME} (default \"Jane\")\n",
 		},
 		"with forced env": {
 			flags.New("myName", "My name").Env("MYNAME"),
@@ -129,11 +129,11 @@ func TestString(t *testing.T) {
 			},
 			args{
 				defaultValue: "John",
-				overrides:    []flags.Override{flags.NewOverride("pseudo", "Jane")},
+				overrides:    []flags.Override{flags.NewOverride("name", "Jane")},
 				args:         []string{"--fullName", "Bill"},
 			},
 			"Bill",
-			"Usage of String:\n  --fullName  string  [full] Name of people ${USE_THIS_ENV} (default \"John\")\n",
+			"Usage of String:\n  --fullName  string  [full] Name of people ${USE_THIS_ENV} (default \"Jane\")\n",
 		},
 	}
 
@@ -180,11 +180,11 @@ func TestInt(t *testing.T) {
 			},
 			args{
 				defaultValue: 18,
-				overrides:    []flags.Override{flags.NewOverride("studentAge", 20)},
+				overrides:    []flags.Override{flags.NewOverride("age", 20)},
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of Int:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 18)\n",
+			"Usage of Int:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 20)\n",
 		},
 	}
 
@@ -231,11 +231,11 @@ func TestInt64(t *testing.T) {
 			},
 			args{
 				defaultValue: 18,
-				overrides:    []flags.Override{flags.NewOverride("studentAge", int64(20))},
+				overrides:    []flags.Override{flags.NewOverride("age", int64(20))},
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of Int64:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 18)\n",
+			"Usage of Int64:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 20)\n",
 		},
 	}
 
@@ -282,11 +282,11 @@ func TestUInt(t *testing.T) {
 			},
 			args{
 				defaultValue: 18,
-				overrides:    []flags.Override{flags.NewOverride("studentAge", uint(20))},
+				overrides:    []flags.Override{flags.NewOverride("age", uint(20))},
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of UInt:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV} (default 18)\n",
+			"Usage of UInt:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV} (default 20)\n",
 		},
 	}
 
@@ -384,11 +384,11 @@ func TestFloat64(t *testing.T) {
 			},
 			args{
 				defaultValue: 18.5,
-				overrides:    []flags.Override{flags.NewOverride("studentAge", 20.3)},
+				overrides:    []flags.Override{flags.NewOverride("age", 20.3)},
 				args:         []string{"--studentAge", "30.3"},
 			},
 			30.3,
-			"Usage of Float64:\n  -studentA, --studentAge  float  [student] Age of people ${USE_THIS_ENV} (default 18.5)\n",
+			"Usage of Float64:\n  -studentA, --studentAge  float  [student] Age of people ${USE_THIS_ENV} (default 20.3)\n",
 		},
 	}
 
