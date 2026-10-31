@@ -14,16 +14,16 @@ import (
 //   -p, --port     uint          [server] Listen port (0 to disable) {MY_CLI_PORT} (default 1080)
 
 func main() {
-	fs := flag.NewFlagSet("my-cli", flag.ExitOnError)
-	fs.Usage = flags.Usage(fs)
+	flagSet := flag.NewFlagSet("my-cli", flag.ExitOnError)
+	flagSet.Usage = flags.Usage(flagSet)
 
-	address := flags.New("address", "Listen address").DocPrefix("server").String(fs, "", nil)
-	port := flags.New("port", "Listen port (0 to disable)").Shorthand("p").DocPrefix("server").Uint(fs, 1080, nil)
-	headers := flags.New("header", "Header to add").Shorthand("h").DocPrefix("server").StringSlice(fs, []string{"x-user", "x-auth"}, nil)
+	address := flags.New("address", "Listen address").DocPrefix("server").String(flagSet, "", nil)
+	port := flags.New("port", "Listen port (0 to disable)").Shorthand("p").DocPrefix("server").Uint(flagSet, 1080, nil)
+	headers := flags.New("header", "Header to add").Shorthand("h").DocPrefix("server").StringSlice(flagSet, []string{"x-user", "x-auth"}, nil)
 
-	fs.Usage = flags.Usage(fs)
+	flagSet.Usage = flags.Usage(flagSet)
 
-	_ = fs.Parse(os.Args[1:])
+	_ = flagSet.Parse(os.Args[1:])
 
 	fmt.Printf("address=`%s`\n", *address)
 	fmt.Printf("port=%d\n", *port)

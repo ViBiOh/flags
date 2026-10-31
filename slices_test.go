@@ -75,20 +75,20 @@ func TestStringSlice(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("StringSlice", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("StringSlice", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.StringSlice(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.StringSlice(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})
@@ -161,20 +161,20 @@ func TestFloat64Slice(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("Float64Slice", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("Float64Slice", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.Float64Slice(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.Float64Slice(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})

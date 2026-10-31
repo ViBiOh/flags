@@ -139,20 +139,20 @@ func TestString(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("String", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("String", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.String(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.String(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})
@@ -190,20 +190,20 @@ func TestInt(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("Int", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("Int", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.Int(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.Int(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})
@@ -241,20 +241,20 @@ func TestInt64(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("Int64", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("Int64", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.Int64(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.Int64(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})
@@ -292,20 +292,20 @@ func TestUInt(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("UInt", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("UInt", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.Uint(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.Uint(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})
@@ -343,20 +343,20 @@ func TestUInt64(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("UInt64", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("UInt64", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.Uint64(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.Uint64(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})
@@ -394,20 +394,20 @@ func TestFloat64(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("Float64", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("Float64", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.Float64(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.Float64(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})
@@ -445,20 +445,20 @@ func TestBool(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("Bool", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("Bool", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.Bool(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.Bool(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})
@@ -496,20 +496,20 @@ func TestDuration(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			fs := flag.NewFlagSet("Duration", flag.ContinueOnError)
-			fs.Usage = flags.Usage(fs)
+			flagSet := flag.NewFlagSet("Duration", flag.ContinueOnError)
+			flagSet.Usage = flags.Usage(flagSet)
 
 			var writer strings.Builder
-			fs.SetOutput(&writer)
+			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
 				testCase.preTest()
 			}
 
-			got := testCase.builder.Duration(fs, testCase.args.defaultValue, testCase.args.overrides)
-			fs.Usage()
+			got := testCase.builder.Duration(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			flagSet.Usage()
 
-			assert.NoError(t, fs.Parse(testCase.args.args))
+			assert.NoError(t, flagSet.Parse(testCase.args.args))
 			assert.Equal(t, testCase.want, *got)
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})

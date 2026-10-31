@@ -36,15 +36,15 @@ func databaseFlags(fs *flag.FlagSet, prefix string, overrides ...flags.Override)
 //              --yimeout         duration  [db] Request timeout ${MY_CLI_YIMEOUT} (default 1s)
 
 func main() {
-	fs := flag.NewFlagSet("my-cli", flag.ExitOnError)
-	fs.Usage = flags.Usage(fs)
+	flagSet := flag.NewFlagSet("my-cli", flag.ExitOnError)
+	flagSet.Usage = flags.Usage(flagSet)
 
-	mainConfig := databaseFlags(fs, "")
-	replicaConfig := databaseFlags(fs, "replica", flags.NewOverride("Name", "user-replica"))
+	mainConfig := databaseFlags(flagSet, "")
+	replicaConfig := databaseFlags(flagSet, "replica", flags.NewOverride("Name", "user-replica"))
 
-	fs.Usage = flags.Usage(fs)
+	flagSet.Usage = flags.Usage(flagSet)
 
-	_ = fs.Parse(os.Args[1:])
+	_ = flagSet.Parse(os.Args[1:])
 
 	fmt.Printf("Main name=`%s`\n", *mainConfig.name)
 	fmt.Printf("Replica name=`%s`\n", *replicaConfig.name)
