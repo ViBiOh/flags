@@ -76,7 +76,7 @@ func TestString(t *testing.T) {
 				overrides: []flags.Override{flags.NewOverride("name", "Jane")},
 			},
 			"John",
-			"Usage of String:\n  --nickname  string  Nickname of people ${STRING_NICKNAME} (default \"John\")\n",
+			"Usage of String:\n  --nickname  string  Nickname of people ${STRING_NICKNAME}\n",
 		},
 		"with forced env": {
 			flags.New("myName", "My name").Env("MYNAME"),
@@ -85,7 +85,7 @@ func TestString(t *testing.T) {
 			},
 			args{},
 			"John",
-			"Usage of String:\n  --myName  string  My name ${MYNAME} (default \"John\")\n",
+			"Usage of String:\n  --myName  string  My name ${MYNAME}\n",
 		},
 		"with args": {
 			flags.New("pseudo", "Pseudo of people"),
@@ -97,7 +97,7 @@ func TestString(t *testing.T) {
 				args:      []string{"-pseudo", "Bill"},
 			},
 			"Bill",
-			"Usage of String:\n  --pseudo  string  Pseudo of people ${STRING_PSEUDO} (default \"John\")\n",
+			"Usage of String:\n  --pseudo  string  Pseudo of people ${STRING_PSEUDO} (default \"Jane\")\n",
 		},
 		"with camelCase to SNAKE_CASE env variable naming": {
 			flags.New("fullName", "Fullname of people"),
@@ -106,7 +106,7 @@ func TestString(t *testing.T) {
 			},
 			args{},
 			"John Doe",
-			"Usage of String:\n  --fullName  string  Fullname of people ${STRING_FULL_NAME} (default \"John Doe\")\n",
+			"Usage of String:\n  --fullName  string  Fullname of people ${STRING_FULL_NAME}\n",
 		},
 		"with doc prefix": {
 			flags.New("middlename", "Middle name of people").DocPrefix("family"),
@@ -133,7 +133,7 @@ func TestString(t *testing.T) {
 				args:         []string{"--fullName", "Bill"},
 			},
 			"Bill",
-			"Usage of String:\n  --fullName  string  [full] Name of people ${USE_THIS_ENV} (default \"John Doe\")\n",
+			"Usage of String:\n  --fullName  string  [full] Name of people ${USE_THIS_ENV} (default \"John\")\n",
 		},
 	}
 
@@ -184,7 +184,7 @@ func TestInt(t *testing.T) {
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of Int:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 25)\n",
+			"Usage of Int:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 18)\n",
 		},
 	}
 
@@ -235,7 +235,7 @@ func TestInt64(t *testing.T) {
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of Int64:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 25)\n",
+			"Usage of Int64:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 18)\n",
 		},
 	}
 
@@ -286,7 +286,7 @@ func TestUInt(t *testing.T) {
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of UInt:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV} (default 25)\n",
+			"Usage of UInt:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV} (default 18)\n",
 		},
 	}
 
@@ -337,7 +337,7 @@ func TestUInt64(t *testing.T) {
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of UInt64:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV} (default 25)\n",
+			"Usage of UInt64:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV} (default 20)\n",
 		},
 	}
 
@@ -388,7 +388,7 @@ func TestFloat64(t *testing.T) {
 				args:         []string{"--studentAge", "30.3"},
 			},
 			30.3,
-			"Usage of Float64:\n  -studentA, --studentAge  float  [student] Age of people ${USE_THIS_ENV} (default 25.4)\n",
+			"Usage of Float64:\n  -studentA, --studentAge  float  [student] Age of people ${USE_THIS_ENV} (default 18.5)\n",
 		},
 	}
 
@@ -439,7 +439,7 @@ func TestBool(t *testing.T) {
 				args:         []string{"--studentActive=false"},
 			},
 			false,
-			"Usage of Bool:\n  -studentA, --studentActive    [student] Control if active or not ${USE_THIS_ENV} (default true)\n",
+			"Usage of Bool:\n  -studentA, --studentActive    [student] Control if active or not ${USE_THIS_ENV} (default false)\n",
 		},
 	}
 
@@ -490,7 +490,7 @@ func TestDuration(t *testing.T) {
 				args:         []string{"--studentRemainingTime=3h"},
 			},
 			time.Hour * 3,
-			"Usage of Duration:\n  -studentR, --studentRemainingTime  duration  [student] Remaining time in exam ${USE_THIS_ENV} (default 4m30s)\n",
+			"Usage of Duration:\n  -studentR, --studentRemainingTime  duration  [student] Remaining time in exam ${USE_THIS_ENV} (default 1m0s)\n",
 		},
 	}
 

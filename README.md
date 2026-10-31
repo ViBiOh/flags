@@ -24,4 +24,4 @@ Flags can take a default value, that can be overriden programatically, always in
 
 ### Security
 
-Be careful when using the arguments values, if someone list the processes on the system, they will appear in plain-text. Pass secrets by environment variables: it's less easily visible.
+Be careful when using the arguments values, if someone list the processes on the system, they will appear in plain-text. Pass secrets by environment variables: it's less easily visible. Values read from environment variables are applied after the flag is registered, so they never appear as the default in the usage output.

@@ -56,21 +56,23 @@ func StringSliceVar(fs *flag.FlagSet, output *[]string, prefix, docPrefix, name,
 	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 	usage := formatLabel(prefix, docPrefix, label, envName) + fmt.Sprintf(", as a `string slice`, environment variable separated by %q", envSeparator)
 
-	initialValue := defaultValue(defaultStaticValue(name, values, overrides), envName, func(input string) ([]string, error) {
-		if len(input) == 0 {
-			return []string{}, nil
-		}
+	staticValue := defaultStaticValue(name, values, overrides)
 
-		return strings.Split(input, envSeparator), nil
-	})
-
-	targetOutput := newStringSlice(initialValue, output)
+	targetOutput := newStringSlice(staticValue, output)
 
 	if len(shorthand) > 0 {
 		fs.Var(targetOutput, firstLowerCase(prefix+firstUpperCase(shorthand)), usage)
 	}
 
 	fs.Var(targetOutput, firstLowerCase(flagName), usage)
+
+	*output = defaultValue(staticValue, envName, func(input string) ([]string, error) {
+		if len(input) == 0 {
+			return []string{}, nil
+		}
+
+		return strings.Split(input, envSeparator), nil
+	})
 }
 
 type float64Slice struct {
@@ -136,7 +138,17 @@ func Float64SliceVar(fs *flag.FlagSet, output *[]float64, prefix, docPrefix, nam
 	flagName, envName := getNameAndEnv(fs, firstUpperCase(prefix), name, env)
 	usage := formatLabel(prefix, docPrefix, label, envName) + fmt.Sprintf(", as a `float64 slice`, environment variable separated by %q", envSeparator)
 
-	initialValue := defaultValue(defaultStaticValue(name, values, overrides), envName, func(input string) ([]float64, error) {
+	staticValue := defaultStaticValue(name, values, overrides)
+
+	targetOutput := newfloat64Slice(staticValue, output)
+
+	if len(shorthand) > 0 {
+		fs.Var(targetOutput, firstLowerCase(prefix+firstUpperCase(shorthand)), usage)
+	}
+
+	fs.Var(targetOutput, firstLowerCase(flagName), usage)
+
+	*output = defaultValue(staticValue, envName, func(input string) ([]float64, error) {
 		if len(input) == 0 {
 			return []float64{}, nil
 		}
@@ -156,12 +168,4 @@ func Float64SliceVar(fs *flag.FlagSet, output *[]float64, prefix, docPrefix, nam
 
 		return output, nil
 	})
-
-	targetOutput := newfloat64Slice(initialValue, output)
-
-	if len(shorthand) > 0 {
-		fs.Var(targetOutput, firstLowerCase(prefix+firstUpperCase(shorthand)), usage)
-	}
-
-	fs.Var(targetOutput, firstLowerCase(flagName), usage)
 }

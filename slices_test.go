@@ -48,7 +48,7 @@ func TestStringSlice(t *testing.T) {
 				defaultValue: []string{"test", "flags"},
 			},
 			[]string{"env", "found"},
-			"Usage of StringSlice:\n  --labels  string slice  [metadata] Labels of ressources ${STRING_SLICE_LABELS}, as a string slice, environment variable separated by \"|\" (default [env, found])\n",
+			"Usage of StringSlice:\n  --labels  string slice  [metadata] Labels of ressources ${STRING_SLICE_LABELS}, as a string slice, environment variable separated by \"|\" (default [test, flags])\n",
 		},
 		"with shorthand and args": {
 			flags.New("namespace", "Namespace").Shorthand("n"),
@@ -69,7 +69,7 @@ func TestStringSlice(t *testing.T) {
 				defaultValue: []string{"error"},
 			},
 			[]string{"info", "error"},
-			"Usage of StringSlice:\n  --match  string slice  Match ${MATCHES}, as a string slice, environment variable separated by \",\" (default [info, error])\n",
+			"Usage of StringSlice:\n  --match  string slice  Match ${MATCHES}, as a string slice, environment variable separated by \",\" (default [error])\n",
 		},
 	}
 
@@ -134,7 +134,7 @@ func TestFloat64Slice(t *testing.T) {
 				defaultValue: []float64{1.2, 3.4},
 			},
 			[]float64{5.6, 7.8},
-			"Usage of Float64Slice:\n  --startCoordinates  float64 slice  [start] Coordinates ${FLOAT64_SLICE_START_COORDINATES}, as a float64 slice, environment variable separated by \"|\" (default [5.600000, 7.800000])\n",
+			"Usage of Float64Slice:\n  --startCoordinates  float64 slice  [start] Coordinates ${FLOAT64_SLICE_START_COORDINATES}, as a float64 slice, environment variable separated by \"|\" (default [1.200000, 3.400000])\n",
 		},
 		"with shorthand and args": {
 			flags.New("position", "GPS Position").Shorthand("g"),
@@ -155,7 +155,7 @@ func TestFloat64Slice(t *testing.T) {
 				defaultValue: []float64{1.2, 3.4},
 			},
 			[]float64{5.6, 7.8},
-			"Usage of Float64Slice:\n  --coordinates  float64 slice  Coordinates ${FLOAT64_SLICE_COORDINATES}, as a float64 slice, environment variable separated by \",\" (default [5.600000, 7.800000])\n",
+			"Usage of Float64Slice:\n  --coordinates  float64 slice  Coordinates ${FLOAT64_SLICE_COORDINATES}, as a float64 slice, environment variable separated by \",\" (default [1.200000, 3.400000])\n",
 		},
 	}
 

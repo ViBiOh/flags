@@ -5,14 +5,7 @@ ifneq ("$(wildcard .env)","")
 	export
 endif
 
-APP_NAME = http
 PACKAGES ?= ./...
-
-MAIN_SOURCE = cmd/http/http.go
-MAIN_RUNNER = go run $(MAIN_SOURCE)
-ifeq ($(DEBUG), true)
-	MAIN_RUNNER = dlv debug $(MAIN_SOURCE) --
-endif
 
 .DEFAULT_GOAL := app
 
@@ -20,11 +13,6 @@ endif
 .PHONY: help
 help: Makefile
 	@sed -n 's|^##||p' $< | column -t -s ':' | sort
-
-## name: Output app name
-.PHONY: name
-name:
-	@printf "$(APP_NAME)"
 
 ## version: Output last commit sha in short version
 .PHONY: version
