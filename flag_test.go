@@ -2,6 +2,8 @@ package flags_test
 
 import (
 	"flag"
+	"os"
+	"os/exec"
 	"strings"
 	"testing"
 	"time"
@@ -19,7 +21,7 @@ func TestString(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      string
 		wantUsage string
@@ -69,7 +71,7 @@ func TestString(t *testing.T) {
 		},
 		"with env": {
 			flags.New("nickname", "Nickname of people"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("STRING_NICKNAME", "John")
 			},
 			args{
@@ -80,7 +82,7 @@ func TestString(t *testing.T) {
 		},
 		"with forced env": {
 			flags.New("myName", "My name").Env("MYNAME"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("MYNAME", "John")
 			},
 			args{},
@@ -89,7 +91,7 @@ func TestString(t *testing.T) {
 		},
 		"with args": {
 			flags.New("pseudo", "Pseudo of people"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("STRING_PSEUDO", "John")
 			},
 			args{
@@ -101,7 +103,7 @@ func TestString(t *testing.T) {
 		},
 		"with acronym in env variable naming": {
 			flags.New("apiURLPath", "Path of the API"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("STRING_API_URL_PATH", "/v1")
 			},
 			args{},
@@ -110,7 +112,7 @@ func TestString(t *testing.T) {
 		},
 		"with camelCase to SNAKE_CASE env variable naming": {
 			flags.New("fullName", "Fullname of people"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("STRING_FULL_NAME", "John Doe")
 			},
 			args{},
@@ -133,7 +135,7 @@ func TestString(t *testing.T) {
 		},
 		"full": {
 			flags.New("name", "Name of people").Prefix("full").DocPrefix("family").Env("USE_THIS_ENV"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("USE_THIS_ENV", "John Doe")
 			},
 			args{
@@ -155,7 +157,7 @@ func TestString(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.String(flagSet, testCase.args.defaultValue, testCase.args.overrides)
@@ -177,14 +179,14 @@ func TestInt(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      int
 		wantUsage string
 	}{
 		"full": {
 			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("USE_THIS_ENV", "25")
 			},
 			args{
@@ -206,7 +208,7 @@ func TestInt(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.Int(flagSet, testCase.args.defaultValue, testCase.args.overrides)
@@ -228,14 +230,14 @@ func TestInt64(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      int64
 		wantUsage string
 	}{
 		"full": {
 			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("USE_THIS_ENV", "25")
 			},
 			args{
@@ -257,7 +259,7 @@ func TestInt64(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.Int64(flagSet, testCase.args.defaultValue, testCase.args.overrides)
@@ -279,14 +281,14 @@ func TestUInt(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      uint
 		wantUsage string
 	}{
 		"full": {
 			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("USE_THIS_ENV", "25")
 			},
 			args{
@@ -308,7 +310,7 @@ func TestUInt(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.Uint(flagSet, testCase.args.defaultValue, testCase.args.overrides)
@@ -330,14 +332,14 @@ func TestUInt64(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      uint64
 		wantUsage string
 	}{
 		"full": {
 			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("USE_THIS_ENV", "25")
 			},
 			args{
@@ -359,7 +361,7 @@ func TestUInt64(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.Uint64(flagSet, testCase.args.defaultValue, testCase.args.overrides)
@@ -381,14 +383,14 @@ func TestFloat64(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      float64
 		wantUsage string
 	}{
 		"full": {
 			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("USE_THIS_ENV", "25.4")
 			},
 			args{
@@ -410,7 +412,7 @@ func TestFloat64(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.Float64(flagSet, testCase.args.defaultValue, testCase.args.overrides)
@@ -432,14 +434,14 @@ func TestBool(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      bool
 		wantUsage string
 	}{
 		"full": {
 			flags.New("active", "Control if active or not").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("USE_THIS_ENV", "true")
 			},
 			args{
@@ -461,7 +463,7 @@ func TestBool(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.Bool(flagSet, testCase.args.defaultValue, testCase.args.overrides)
@@ -483,14 +485,14 @@ func TestDuration(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      time.Duration
 		wantUsage string
 	}{
 		"full": {
 			flags.New("remainingTime", "Remaining time in exam").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("r"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("USE_THIS_ENV", "4m30s")
 			},
 			args{
@@ -512,7 +514,7 @@ func TestDuration(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.Duration(flagSet, testCase.args.defaultValue, testCase.args.overrides)
@@ -523,4 +525,99 @@ func TestDuration(t *testing.T) {
 			assert.Equal(t, testCase.wantUsage, writer.String())
 		})
 	}
+}
+
+func TestInvalidEnvironmentValue(t *testing.T) {
+	cases := map[string]struct {
+		register func(flagSet *flag.FlagSet) func() any
+		envName  string
+		want     any
+	}{
+		"int": {
+			func(flagSet *flag.FlagSet) func() any {
+				got := flags.New("age", "Age").Int(flagSet, 18, nil)
+
+				return func() any { return *got }
+			},
+			"INVALID_AGE",
+			18,
+		},
+		"bool": {
+			func(flagSet *flag.FlagSet) func() any {
+				got := flags.New("active", "Active").Bool(flagSet, true, nil)
+
+				return func() any { return *got }
+			},
+			"INVALID_ACTIVE",
+			true,
+		},
+		"duration": {
+			func(flagSet *flag.FlagSet) func() any {
+				got := flags.New("timeout", "Timeout").Duration(flagSet, time.Second, nil)
+
+				return func() any { return *got }
+			},
+			"INVALID_TIMEOUT",
+			time.Second,
+		},
+		"float64 slice": {
+			func(flagSet *flag.FlagSet) func() any {
+				got := flags.New("coords", "Coords").Float64Slice(flagSet, []float64{1, 2}, nil)
+
+				return func() any { return *got }
+			},
+			"INVALID_COORDS",
+			[]float64{1, 2},
+		},
+	}
+
+	for intention, testCase := range cases {
+		t.Run(intention, func(t *testing.T) {
+			t.Setenv(testCase.envName, "not-a-value")
+
+			message := "invalid value for environment variable " + testCase.envName
+
+			t.Run("continue", func(t *testing.T) {
+				var writer strings.Builder
+
+				flagSet := flag.NewFlagSet("Invalid", flag.ContinueOnError)
+				flagSet.SetOutput(&writer)
+
+				got := testCase.register(flagSet)
+
+				assert.Equal(t, message+"\n", writer.String())
+				assert.Equal(t, testCase.want, got())
+			})
+
+			t.Run("panic", func(t *testing.T) {
+				flagSet := flag.NewFlagSet("Invalid", flag.PanicOnError)
+				flagSet.SetOutput(&strings.Builder{})
+
+				assert.PanicsWithValue(t, message, func() {
+					testCase.register(flagSet)
+				})
+			})
+		})
+	}
+}
+
+func TestInvalidEnvironmentValueExits(t *testing.T) {
+	if os.Getenv("FLAGS_TEST_EXIT") == "1" {
+		flagSet := flag.NewFlagSet("Invalid", flag.ExitOnError)
+		flags.New("age", "Age").Int(flagSet, 18, nil)
+
+		return
+	}
+
+	command := exec.Command(os.Args[0], "-test.run=^TestInvalidEnvironmentValueExits$")
+	command.Env = append(os.Environ(), "FLAGS_TEST_EXIT=1", "INVALID_AGE=not-a-value")
+
+	output, err := command.CombinedOutput()
+
+	var exitErr *exec.ExitError
+
+	assert.ErrorAs(t, err, &exitErr)
+	assert.Equal(t, 2, exitErr.ExitCode())
+	assert.Contains(t, string(output), "invalid value for environment variable INVALID_AGE")
+	assert.NotContains(t, string(output), "not-a-value")
 }

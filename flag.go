@@ -146,7 +146,7 @@ func bindScalar[T any](fs *flag.FlagSet, output *T, bind func(*T, string, T, str
 
 	bind(output, firstLowerCase(flagName), staticValue, usage)
 
-	*output = defaultValue(staticValue, envName, parse)
+	*output = defaultValue(fs, staticValue, envName, parse)
 }
 
 func computeDescription(fs *flag.FlagSet, prefix, docPrefix, name, label, env string) (string, string, string) {
@@ -183,13 +183,33 @@ func formatLabel(prefix, docPrefix, label, envName string) string {
 }
 
 // Callers apply the result after registering the flag, so a value read from the environment (possibly a secret) is never shown as the default in usage.
-func defaultValue[T any](value T, envName string, parse func(string) (T, error)) T {
-	if val, ok := os.LookupEnv(envName); ok {
-		parsed, err := parse(val)
-		if err == nil {
-			return parsed
-		}
+func defaultValue[T any](fs *flag.FlagSet, value T, envName string, parse func(string) (T, error)) T {
+	val, ok := os.LookupEnv(envName)
+	if !ok {
+		return value
 	}
 
-	return value
+	parsed, err := parse(val)
+	if err != nil {
+		reportInvalidEnv(fs, envName)
+
+		return value
+	}
+
+	return parsed
+}
+
+// The offending value is not printed because it may be a secret.
+func reportInvalidEnv(fs *flag.FlagSet, envName string) {
+	message := "invalid value for environment variable " + envName
+
+	_, _ = fmt.Fprintln(fs.Output(), message)
+
+	switch fs.ErrorHandling() {
+	case flag.ExitOnError:
+		os.Exit(2)
+	case flag.PanicOnError:
+		panic(message)
+	case flag.ContinueOnError:
+	}
 }

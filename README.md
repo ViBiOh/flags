@@ -22,6 +22,8 @@ The argument's name is in camelCase format. The environement variable name is in
 
 Flags can take a default value, that can be overriden programatically, always in the case you reuse the same `flags` twice (see [advanced.go](cmd/advanced/advanced.go) example.)
 
+An environment variable that cannot be parsed (e.g. `abc` for an int flag) is reported like an invalid argument would be, following the `FlagSet` error handling: with `flag.ExitOnError` a message is printed and the program exits with status 2, with `flag.PanicOnError` it panics, and with `flag.ContinueOnError` the message is printed and the default value is kept. The offending value is never printed.
+
 ### Security
 
 Be careful when using the arguments values, if someone list the processes on the system, they will appear in plain-text. Pass secrets by environment variables: it's less easily visible. Values read from environment variables are applied after the flag is registered, so they never appear as the default in the usage output.

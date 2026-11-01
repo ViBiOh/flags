@@ -95,7 +95,7 @@ func bindSlice[T any](fs *flag.FlagSet, output *[]T, typeName string, parse func
 
 	fs.Var(target, firstLowerCase(flagName), usage)
 
-	*output = defaultValue(*output, envName, func(input string) ([]T, error) {
+	*output = defaultValue(fs, *output, envName, func(input string) ([]T, error) {
 		return parseSlice(input, envSeparator, parse)
 	})
 }

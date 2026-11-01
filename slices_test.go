@@ -18,7 +18,7 @@ func TestStringSlice(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      []string
 		wantUsage string
@@ -41,7 +41,7 @@ func TestStringSlice(t *testing.T) {
 		},
 		"with read from environment variable": {
 			flags.New("labels", "Labels of ressources").DocPrefix("metadata").EnvSeparator("|"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("STRING_SLICE_LABELS", "env|found")
 			},
 			args{
@@ -62,7 +62,7 @@ func TestStringSlice(t *testing.T) {
 		},
 		"with env": {
 			flags.New("match", "Match").Env("MATCHES"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("MATCHES", "info,error")
 			},
 			args{
@@ -82,7 +82,7 @@ func TestStringSlice(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.StringSlice(flagSet, testCase.args.defaultValue, testCase.args.overrides)
@@ -104,7 +104,7 @@ func TestFloat64Slice(t *testing.T) {
 
 	cases := map[string]struct {
 		builder   flags.Builder
-		preTest   func()
+		preTest   func(t *testing.T)
 		args      args
 		want      []float64
 		wantUsage string
@@ -127,7 +127,7 @@ func TestFloat64Slice(t *testing.T) {
 		},
 		"with read from environment variable": {
 			flags.New("coordinates", "Coordinates").Prefix("start").EnvSeparator("|"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("FLOAT64_SLICE_START_COORDINATES", "5.6|7.8")
 			},
 			args{
@@ -148,7 +148,7 @@ func TestFloat64Slice(t *testing.T) {
 		},
 		"with env": {
 			flags.New("coordinates", "Coordinates"),
-			func() {
+			func(t *testing.T) {
 				t.Setenv("FLOAT64_SLICE_COORDINATES", "5.6,7.8")
 			},
 			args{
@@ -168,7 +168,7 @@ func TestFloat64Slice(t *testing.T) {
 			flagSet.SetOutput(&writer)
 
 			if testCase.preTest != nil {
-				testCase.preTest()
+				testCase.preTest(t)
 			}
 
 			got := testCase.builder.Float64Slice(flagSet, testCase.args.defaultValue, testCase.args.overrides)
