@@ -3,6 +3,8 @@ package flags
 import "testing"
 
 func TestFirstLowerCase(t *testing.T) {
+	t.Parallel()
+
 	cases := map[string]struct {
 		input string
 		want  string
@@ -23,6 +25,8 @@ func TestFirstLowerCase(t *testing.T) {
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			if result := firstLowerCase(tc.input); result != tc.want {
 				t.Errorf("FirstUpperCase() = `%s`, want `%s`", result, tc.want)
 			}
@@ -31,6 +35,8 @@ func TestFirstLowerCase(t *testing.T) {
 }
 
 func TestFirstUpperCase(t *testing.T) {
+	t.Parallel()
+
 	cases := map[string]struct {
 		input string
 		want  string
@@ -51,6 +57,8 @@ func TestFirstUpperCase(t *testing.T) {
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			if result := firstUpperCase(tc.input); result != tc.want {
 				t.Errorf("FirstUpperCase() = `%s`, want `%s`", result, tc.want)
 			}
@@ -59,6 +67,8 @@ func TestFirstUpperCase(t *testing.T) {
 }
 
 func TestSnakeCase(t *testing.T) {
+	t.Parallel()
+
 	cases := map[string]struct {
 		input string
 		want  string
@@ -111,6 +121,8 @@ func TestSnakeCase(t *testing.T) {
 
 	for intention, tc := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			if result := SnakeCase(tc.input); result != tc.want {
 				t.Errorf("SnakeCase() = `%s`, want `%s`", result, tc.want)
 			}

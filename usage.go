@@ -1,9 +1,11 @@
 package flags
 
 import (
+	"cmp"
 	"flag"
 	"fmt"
-	"sort"
+	"maps"
+	"slices"
 )
 
 type Flag struct {
@@ -52,28 +54,16 @@ func Usage(fs *flag.FlagSet) func() {
 			_, _ = fmt.Fprint(output, "Usage:\n")
 		}
 
-		items := make([]*Flag, 0, len(flags))
-		for _, item := range flags {
-			index := sort.Search(len(items), func(i int) bool {
-				return items[i].name > item.name
-			})
+		items := slices.SortedFunc(maps.Values(flags), func(a, b *Flag) int {
+			return cmp.Compare(a.name, b.name)
+		})
 
-			items = append(items, item)
-			copy(items[index+1:], items[index:])
-			items[index] = item
-
-			if length := len(item.name); length > maxNameLen {
-				maxNameLen = length
-			}
-
-			if length := len(item.shorthand); length > maxShorthandLen {
-				maxShorthandLen = length
-			}
+		for _, item := range items {
+			maxNameLen = max(maxNameLen, len(item.name))
+			maxShorthandLen = max(maxShorthandLen, len(item.shorthand))
 
 			flagType, _ := flag.UnquoteUsage(item.flag)
-			if length := len(flagType); length > maxTypeLen {
-				maxTypeLen = length
-			}
+			maxTypeLen = max(maxTypeLen, len(flagType))
 		}
 
 		if maxShorthandLen > 0 {
@@ -83,11 +73,12 @@ func Usage(fs *flag.FlagSet) func() {
 		for _, item := range items {
 			flagType, usage := flag.UnquoteUsage(item.flag)
 
+			var shorthand string
 			if len(item.shorthand) > 0 {
-				_, _ = fmt.Fprintf(output, fmt.Sprintf("  %%-%ds--%%-%ds  %%-%ds  %%s", maxShorthandLen, maxNameLen, maxTypeLen), fmt.Sprintf("-%s, ", item.shorthand), item.name, flagType, usage)
-			} else {
-				_, _ = fmt.Fprintf(output, fmt.Sprintf("  %%-%ds--%%-%ds  %%-%ds  %%s", maxShorthandLen, maxNameLen, maxTypeLen), "", item.name, flagType, usage)
+				shorthand = "-" + item.shorthand + ", "
 			}
+
+			_, _ = fmt.Fprintf(output, "  %-*s--%-*s  %-*s  %s", maxShorthandLen, shorthand, maxNameLen, item.name, maxTypeLen, flagType, usage)
 
 			if defaultValue := item.flag.DefValue; len(defaultValue) > 0 {
 				if flagType == "string" {

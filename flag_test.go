@@ -13,6 +13,8 @@ import (
 )
 
 func TestString(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue string
 		overrides    []flags.Override
@@ -72,7 +74,7 @@ func TestString(t *testing.T) {
 		"with env": {
 			flags.New("nickname", "Nickname of people"),
 			func(t *testing.T) {
-				t.Setenv("STRING_NICKNAME", "John")
+				setenv(t, "STRING_NICKNAME", "John")
 			},
 			args{
 				overrides: []flags.Override{flags.NewOverride("nickname", "Jane")},
@@ -83,7 +85,7 @@ func TestString(t *testing.T) {
 		"with forced env": {
 			flags.New("myName", "My name").Env("MYNAME"),
 			func(t *testing.T) {
-				t.Setenv("MYNAME", "John")
+				setenv(t, "MYNAME", "John")
 			},
 			args{},
 			"John",
@@ -92,7 +94,7 @@ func TestString(t *testing.T) {
 		"with args": {
 			flags.New("pseudo", "Pseudo of people"),
 			func(t *testing.T) {
-				t.Setenv("STRING_PSEUDO", "John")
+				setenv(t, "STRING_PSEUDO", "John")
 			},
 			args{
 				overrides: []flags.Override{flags.NewOverride("pseudo", "Jane")},
@@ -104,7 +106,7 @@ func TestString(t *testing.T) {
 		"with acronym in env variable naming": {
 			flags.New("apiURLPath", "Path of the API"),
 			func(t *testing.T) {
-				t.Setenv("STRING_API_URL_PATH", "/v1")
+				setenv(t, "STRING_API_URL_PATH", "/v1")
 			},
 			args{},
 			"/v1",
@@ -113,7 +115,7 @@ func TestString(t *testing.T) {
 		"with camelCase to SNAKE_CASE env variable naming": {
 			flags.New("fullName", "Fullname of people"),
 			func(t *testing.T) {
-				t.Setenv("STRING_FULL_NAME", "John Doe")
+				setenv(t, "STRING_FULL_NAME", "John Doe")
 			},
 			args{},
 			"John Doe",
@@ -134,9 +136,9 @@ func TestString(t *testing.T) {
 			"Usage of String:\n  --familyName  string  [family] Name of people ${STRING_FAMILY_NAME}\n",
 		},
 		"full": {
-			flags.New("name", "Name of people").Prefix("full").DocPrefix("family").Env("USE_THIS_ENV"),
+			flags.New("name", "Name of people").Prefix("full").DocPrefix("family").Env("USE_THIS_ENV_STRING"),
 			func(t *testing.T) {
-				t.Setenv("USE_THIS_ENV", "John Doe")
+				setenv(t, "USE_THIS_ENV_STRING", "John Doe")
 			},
 			args{
 				defaultValue: "John",
@@ -144,12 +146,14 @@ func TestString(t *testing.T) {
 				args:         []string{"--fullName", "Bill"},
 			},
 			"Bill",
-			"Usage of String:\n  --fullName  string  [full] Name of people ${USE_THIS_ENV} (default \"Jane\")\n",
+			"Usage of String:\n  --fullName  string  [full] Name of people ${USE_THIS_ENV_STRING} (default \"Jane\")\n",
 		},
 	}
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("String", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -171,6 +175,8 @@ func TestString(t *testing.T) {
 }
 
 func TestInt(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue int
 		overrides    []flags.Override
@@ -185,9 +191,9 @@ func TestInt(t *testing.T) {
 		wantUsage string
 	}{
 		"full": {
-			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
+			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV_INT").Shorthand("a"),
 			func(t *testing.T) {
-				t.Setenv("USE_THIS_ENV", "25")
+				setenv(t, "USE_THIS_ENV_INT", "25")
 			},
 			args{
 				defaultValue: 18,
@@ -195,12 +201,14 @@ func TestInt(t *testing.T) {
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of Int:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 20)\n",
+			"Usage of Int:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV_INT} (default 20)\n",
 		},
 	}
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("Int", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -222,6 +230,8 @@ func TestInt(t *testing.T) {
 }
 
 func TestInt64(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue int64
 		overrides    []flags.Override
@@ -236,9 +246,9 @@ func TestInt64(t *testing.T) {
 		wantUsage string
 	}{
 		"full": {
-			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
+			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV_INT64").Shorthand("a"),
 			func(t *testing.T) {
-				t.Setenv("USE_THIS_ENV", "25")
+				setenv(t, "USE_THIS_ENV_INT64", "25")
 			},
 			args{
 				defaultValue: 18,
@@ -246,12 +256,14 @@ func TestInt64(t *testing.T) {
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of Int64:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV} (default 20)\n",
+			"Usage of Int64:\n  -studentA, --studentAge  int  [student] Age of people ${USE_THIS_ENV_INT64} (default 20)\n",
 		},
 	}
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("Int64", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -273,6 +285,8 @@ func TestInt64(t *testing.T) {
 }
 
 func TestUInt(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue uint
 		overrides    []flags.Override
@@ -287,9 +301,9 @@ func TestUInt(t *testing.T) {
 		wantUsage string
 	}{
 		"full": {
-			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
+			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV_UINT").Shorthand("a"),
 			func(t *testing.T) {
-				t.Setenv("USE_THIS_ENV", "25")
+				setenv(t, "USE_THIS_ENV_UINT", "25")
 			},
 			args{
 				defaultValue: 18,
@@ -297,12 +311,14 @@ func TestUInt(t *testing.T) {
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of UInt:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV} (default 20)\n",
+			"Usage of UInt:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV_UINT} (default 20)\n",
 		},
 	}
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("UInt", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -324,6 +340,8 @@ func TestUInt(t *testing.T) {
 }
 
 func TestUInt64(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue uint64
 		overrides    []flags.Override
@@ -338,9 +356,9 @@ func TestUInt64(t *testing.T) {
 		wantUsage string
 	}{
 		"full": {
-			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
+			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV_UINT64").Shorthand("a"),
 			func(t *testing.T) {
-				t.Setenv("USE_THIS_ENV", "25")
+				setenv(t, "USE_THIS_ENV_UINT64", "25")
 			},
 			args{
 				defaultValue: 18,
@@ -348,12 +366,14 @@ func TestUInt64(t *testing.T) {
 				args:         []string{"--studentAge", "30"},
 			},
 			30,
-			"Usage of UInt64:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV} (default 20)\n",
+			"Usage of UInt64:\n  -studentA, --studentAge  uint  [student] Age of people ${USE_THIS_ENV_UINT64} (default 20)\n",
 		},
 	}
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("UInt64", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -375,6 +395,8 @@ func TestUInt64(t *testing.T) {
 }
 
 func TestFloat64(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue float64
 		overrides    []flags.Override
@@ -389,9 +411,9 @@ func TestFloat64(t *testing.T) {
 		wantUsage string
 	}{
 		"full": {
-			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
+			flags.New("age", "Age of people").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV_FLOAT64").Shorthand("a"),
 			func(t *testing.T) {
-				t.Setenv("USE_THIS_ENV", "25.4")
+				setenv(t, "USE_THIS_ENV_FLOAT64", "25.4")
 			},
 			args{
 				defaultValue: 18.5,
@@ -399,12 +421,14 @@ func TestFloat64(t *testing.T) {
 				args:         []string{"--studentAge", "30.3"},
 			},
 			30.3,
-			"Usage of Float64:\n  -studentA, --studentAge  float  [student] Age of people ${USE_THIS_ENV} (default 20.3)\n",
+			"Usage of Float64:\n  -studentA, --studentAge  float  [student] Age of people ${USE_THIS_ENV_FLOAT64} (default 20.3)\n",
 		},
 	}
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("Float64", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -426,6 +450,8 @@ func TestFloat64(t *testing.T) {
 }
 
 func TestBool(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue bool
 		overrides    []flags.Override
@@ -440,9 +466,9 @@ func TestBool(t *testing.T) {
 		wantUsage string
 	}{
 		"full": {
-			flags.New("active", "Control if active or not").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("a"),
+			flags.New("active", "Control if active or not").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV_BOOL").Shorthand("a"),
 			func(t *testing.T) {
-				t.Setenv("USE_THIS_ENV", "true")
+				setenv(t, "USE_THIS_ENV_BOOL", "true")
 			},
 			args{
 				defaultValue: true,
@@ -450,12 +476,14 @@ func TestBool(t *testing.T) {
 				args:         []string{"--studentActive=false"},
 			},
 			false,
-			"Usage of Bool:\n  -studentA, --studentActive    [student] Control if active or not ${USE_THIS_ENV} (default false)\n",
+			"Usage of Bool:\n  -studentA, --studentActive    [student] Control if active or not ${USE_THIS_ENV_BOOL} (default false)\n",
 		},
 	}
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("Bool", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -477,6 +505,8 @@ func TestBool(t *testing.T) {
 }
 
 func TestDuration(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue time.Duration
 		overrides    []flags.Override
@@ -491,9 +521,9 @@ func TestDuration(t *testing.T) {
 		wantUsage string
 	}{
 		"full": {
-			flags.New("remainingTime", "Remaining time in exam").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV").Shorthand("r"),
+			flags.New("remainingTime", "Remaining time in exam").Prefix("student").DocPrefix("person").Env("USE_THIS_ENV_DURATION").Shorthand("r"),
 			func(t *testing.T) {
-				t.Setenv("USE_THIS_ENV", "4m30s")
+				setenv(t, "USE_THIS_ENV_DURATION", "4m30s")
 			},
 			args{
 				defaultValue: time.Hour * 24,
@@ -501,12 +531,14 @@ func TestDuration(t *testing.T) {
 				args:         []string{"--studentRemainingTime=3h"},
 			},
 			time.Hour * 3,
-			"Usage of Duration:\n  -studentR, --studentRemainingTime  duration  [student] Remaining time in exam ${USE_THIS_ENV} (default 1m0s)\n",
+			"Usage of Duration:\n  -studentR, --studentRemainingTime  duration  [student] Remaining time in exam ${USE_THIS_ENV_DURATION} (default 1m0s)\n",
 		},
 	}
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("Duration", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -528,6 +560,8 @@ func TestDuration(t *testing.T) {
 }
 
 func TestInvalidEnvironmentValue(t *testing.T) {
+	t.Parallel()
+
 	cases := map[string]struct {
 		register func(flagSet *flag.FlagSet) func() any
 		envName  string
@@ -573,11 +607,15 @@ func TestInvalidEnvironmentValue(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
-			t.Setenv(testCase.envName, "not-a-value")
+			t.Parallel()
+
+			setenv(t, testCase.envName, "not-a-value")
 
 			message := "invalid value for environment variable " + testCase.envName
 
 			t.Run("continue", func(t *testing.T) {
+				t.Parallel()
+
 				var writer strings.Builder
 
 				flagSet := flag.NewFlagSet("Invalid", flag.ContinueOnError)
@@ -590,6 +628,8 @@ func TestInvalidEnvironmentValue(t *testing.T) {
 			})
 
 			t.Run("panic", func(t *testing.T) {
+				t.Parallel()
+
 				flagSet := flag.NewFlagSet("Invalid", flag.PanicOnError)
 				flagSet.SetOutput(&strings.Builder{})
 
@@ -602,6 +642,8 @@ func TestInvalidEnvironmentValue(t *testing.T) {
 }
 
 func TestInvalidEnvironmentValueExits(t *testing.T) {
+	t.Parallel()
+
 	if os.Getenv("FLAGS_TEST_EXIT") == "1" {
 		flagSet := flag.NewFlagSet("Invalid", flag.ExitOnError)
 		flags.New("age", "Age").Int(flagSet, 18, nil)
@@ -620,4 +662,23 @@ func TestInvalidEnvironmentValueExits(t *testing.T) {
 	assert.Equal(t, 2, exitErr.ExitCode())
 	assert.Contains(t, string(output), "invalid value for environment variable INVALID_AGE")
 	assert.NotContains(t, string(output), "not-a-value")
+}
+
+// t.Setenv forbids parallel tests because the environment is process wide. Every case uses an environment variable name no other case reads or writes, which makes plain os.Setenv safe.
+func setenv(t *testing.T, key, value string) {
+	t.Helper()
+
+	previous, existed := os.LookupEnv(key)
+
+	if err := os.Setenv(key, value); err != nil {
+		t.Fatalf("setting environment variable %s: %s", key, err)
+	}
+
+	t.Cleanup(func() {
+		if existed {
+			_ = os.Setenv(key, previous)
+		} else {
+			_ = os.Unsetenv(key)
+		}
+	})
 }

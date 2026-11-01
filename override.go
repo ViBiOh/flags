@@ -2,13 +2,12 @@ package flags
 
 import "strings"
 
-// Override is an override of default value.
 type Override struct {
 	value any
 	name  string
 }
 
-// NewOverride create a default override value.
+// NewOverride replaces the default of the flags named name, ignoring case and any prefix. The value must have the Go type of the flag.
 func NewOverride(name string, value any) Override {
 	return Override{
 		name:  name,

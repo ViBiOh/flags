@@ -55,7 +55,6 @@ func (sv *sliceValue[T]) Set(input string) error {
 	return nil
 }
 
-// StringSlice creates a string slice flag.
 func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []string, overrides []Override) *[]string {
 	output := new([]string)
 
@@ -64,12 +63,10 @@ func StringSlice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, en
 	return output
 }
 
-// StringSliceVar binds a string slice flag.
 func StringSliceVar(fs *flag.FlagSet, output *[]string, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []string, overrides []Override) {
 	bindSlice(fs, output, "string slice", parseString, formatString, prefix, docPrefix, name, shorthand, label, env, envSeparator, values, overrides)
 }
 
-// Float64Slice creates a float64 slice flag.
 func Float64Slice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []float64, overrides []Override) *[]float64 {
 	output := new([]float64)
 
@@ -78,7 +75,6 @@ func Float64Slice(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, e
 	return output
 }
 
-// Float64SliceVar binds a float64 slice flag.
 func Float64SliceVar(fs *flag.FlagSet, output *[]float64, prefix, docPrefix, name, shorthand, label, env, envSeparator string, values []float64, overrides []Override) {
 	bindSlice(fs, output, "float64 slice", parseFloat64, formatFloat64, prefix, docPrefix, name, shorthand, label, env, envSeparator, values, overrides)
 }

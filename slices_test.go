@@ -10,6 +10,8 @@ import (
 )
 
 func TestStringSlice(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue []string
 		overrides    []flags.Override
@@ -42,7 +44,7 @@ func TestStringSlice(t *testing.T) {
 		"with read from environment variable": {
 			flags.New("labels", "Labels of ressources").DocPrefix("metadata").EnvSeparator("|"),
 			func(t *testing.T) {
-				t.Setenv("STRING_SLICE_LABELS", "env|found")
+				setenv(t, "STRING_SLICE_LABELS", "env|found")
 			},
 			args{
 				defaultValue: []string{"test", "flags"},
@@ -63,7 +65,7 @@ func TestStringSlice(t *testing.T) {
 		"with env": {
 			flags.New("match", "Match").Env("MATCHES"),
 			func(t *testing.T) {
-				t.Setenv("MATCHES", "info,error")
+				setenv(t, "MATCHES", "info,error")
 			},
 			args{
 				defaultValue: []string{"error"},
@@ -75,6 +77,8 @@ func TestStringSlice(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("StringSlice", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -96,6 +100,8 @@ func TestStringSlice(t *testing.T) {
 }
 
 func TestFloat64Slice(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		defaultValue []float64
 		overrides    []flags.Override
@@ -126,15 +132,15 @@ func TestFloat64Slice(t *testing.T) {
 			"Usage of Float64Slice:\n  --startCoordinates  float64 slice  [start] Coordinates ${FLOAT64_SLICE_START_COORDINATES}, as a float64 slice, environment variable separated by \",\" (default [1.200000, 3.400000])\n",
 		},
 		"with read from environment variable": {
-			flags.New("coordinates", "Coordinates").Prefix("start").EnvSeparator("|"),
+			flags.New("coordinates", "Coordinates").Prefix("end").EnvSeparator("|"),
 			func(t *testing.T) {
-				t.Setenv("FLOAT64_SLICE_START_COORDINATES", "5.6|7.8")
+				setenv(t, "FLOAT64_SLICE_END_COORDINATES", "5.6|7.8")
 			},
 			args{
 				defaultValue: []float64{1.2, 3.4},
 			},
 			[]float64{5.6, 7.8},
-			"Usage of Float64Slice:\n  --startCoordinates  float64 slice  [start] Coordinates ${FLOAT64_SLICE_START_COORDINATES}, as a float64 slice, environment variable separated by \"|\" (default [1.200000, 3.400000])\n",
+			"Usage of Float64Slice:\n  --endCoordinates  float64 slice  [end] Coordinates ${FLOAT64_SLICE_END_COORDINATES}, as a float64 slice, environment variable separated by \"|\" (default [1.200000, 3.400000])\n",
 		},
 		"with shorthand and args": {
 			flags.New("position", "GPS Position").Shorthand("g"),
@@ -149,7 +155,7 @@ func TestFloat64Slice(t *testing.T) {
 		"with env": {
 			flags.New("coordinates", "Coordinates"),
 			func(t *testing.T) {
-				t.Setenv("FLOAT64_SLICE_COORDINATES", "5.6,7.8")
+				setenv(t, "FLOAT64_SLICE_COORDINATES", "5.6,7.8")
 			},
 			args{
 				defaultValue: []float64{1.2, 3.4},
@@ -161,6 +167,8 @@ func TestFloat64Slice(t *testing.T) {
 
 	for intention, testCase := range cases {
 		t.Run(intention, func(t *testing.T) {
+			t.Parallel()
+
 			flagSet := flag.NewFlagSet("Float64Slice", flag.ContinueOnError)
 			flagSet.Usage = flags.Usage(flagSet)
 
@@ -182,6 +190,8 @@ func TestFloat64Slice(t *testing.T) {
 }
 
 func TestStringSliceKeepsCallerDefaultIntact(t *testing.T) {
+	t.Parallel()
+
 	defaults := []string{"a", "b", "c"}
 
 	firstSet := flag.NewFlagSet("First", flag.ContinueOnError)
@@ -199,6 +209,8 @@ func TestStringSliceKeepsCallerDefaultIntact(t *testing.T) {
 }
 
 func TestFloat64SliceKeepsCallerDefaultIntact(t *testing.T) {
+	t.Parallel()
+
 	defaults := []float64{1, 2, 3}
 
 	firstSet := flag.NewFlagSet("First", flag.ContinueOnError)
@@ -216,6 +228,8 @@ func TestFloat64SliceKeepsCallerDefaultIntact(t *testing.T) {
 }
 
 func TestFloat64SliceInvalidValueKeepsDefault(t *testing.T) {
+	t.Parallel()
+
 	flagSet := flag.NewFlagSet("Float64Slice", flag.ContinueOnError)
 	flagSet.SetOutput(&strings.Builder{})
 
