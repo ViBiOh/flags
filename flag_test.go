@@ -164,7 +164,7 @@ func TestString(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.String(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -219,7 +219,7 @@ func TestInt(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.Int(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -274,7 +274,7 @@ func TestInt64(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.Int64(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -329,7 +329,7 @@ func TestUInt(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.Uint(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -384,7 +384,7 @@ func TestUInt64(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.Uint64(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -439,7 +439,7 @@ func TestFloat64(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.Float64(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -494,7 +494,7 @@ func TestBool(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.Bool(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -549,7 +549,7 @@ func TestDuration(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.Duration(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -569,7 +569,7 @@ func TestInvalidEnvironmentValue(t *testing.T) {
 	}{
 		"int": {
 			func(flagSet *flag.FlagSet) func() any {
-				got := flags.New("age", "Age").Int(flagSet, 18, nil)
+				got := flags.New("age", "Age").Flag(flagSet, 18, nil)
 
 				return func() any { return *got }
 			},
@@ -578,7 +578,7 @@ func TestInvalidEnvironmentValue(t *testing.T) {
 		},
 		"bool": {
 			func(flagSet *flag.FlagSet) func() any {
-				got := flags.New("active", "Active").Bool(flagSet, true, nil)
+				got := flags.New("active", "Active").Flag(flagSet, true, nil)
 
 				return func() any { return *got }
 			},
@@ -587,7 +587,7 @@ func TestInvalidEnvironmentValue(t *testing.T) {
 		},
 		"duration": {
 			func(flagSet *flag.FlagSet) func() any {
-				got := flags.New("timeout", "Timeout").Duration(flagSet, time.Second, nil)
+				got := flags.New("timeout", "Timeout").Flag(flagSet, time.Second, nil)
 
 				return func() any { return *got }
 			},
@@ -596,7 +596,7 @@ func TestInvalidEnvironmentValue(t *testing.T) {
 		},
 		"float64 slice": {
 			func(flagSet *flag.FlagSet) func() any {
-				got := flags.New("coords", "Coords").Float64Slice(flagSet, []float64{1, 2}, nil)
+				got := flags.New("coords", "Coords").Flag(flagSet, []float64{1, 2}, nil)
 
 				return func() any { return *got }
 			},
@@ -646,7 +646,7 @@ func TestInvalidEnvironmentValueExits(t *testing.T) {
 
 	if os.Getenv("FLAGS_TEST_EXIT") == "1" {
 		flagSet := flag.NewFlagSet("Invalid", flag.ExitOnError)
-		flags.New("age", "Age").Int(flagSet, 18, nil)
+		flags.New("age", "Age").Flag(flagSet, 18, nil)
 
 		return
 	}
@@ -681,4 +681,28 @@ func setenv(t *testing.T, key, value string) {
 			_ = os.Unsetenv(key)
 		}
 	})
+}
+
+func TestBuilderFlagVar(t *testing.T) {
+	t.Parallel()
+
+	flagSet := flag.NewFlagSet("FlagVar", flag.ContinueOnError)
+
+	var (
+		port    uint
+		timeout time.Duration
+		tags    []string
+		coords  []float64
+	)
+
+	flags.New("port", "Port").Prefix("var").FlagVar(flagSet, &port, 8080, nil)
+	flags.New("timeout", "Timeout").Prefix("var").FlagVar(flagSet, &timeout, time.Second, nil)
+	flags.New("tags", "Tags").Prefix("var").FlagVar(flagSet, &tags, []string{"a"}, nil)
+	flags.New("coords", "Coords").Prefix("var").FlagVar(flagSet, &coords, []float64{1}, nil)
+
+	assert.NoError(t, flagSet.Parse([]string{"--varPort", "9090", "--varTimeout", "2s", "--varTags", "x", "--varCoords", "2.5"}))
+	assert.Equal(t, uint(9090), port)
+	assert.Equal(t, 2*time.Second, timeout)
+	assert.Equal(t, []string{"x"}, tags)
+	assert.Equal(t, []float64{2.5}, coords)
 }

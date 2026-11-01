@@ -18,10 +18,10 @@ type databaseConfig struct {
 
 func databaseFlags(fs *flag.FlagSet, prefix string, overrides ...flags.Override) databaseConfig {
 	return databaseConfig{
-		url:     flags.New("url", "Database url").Shorthand("u").Prefix(prefix).DocPrefix("db").String(fs, "", overrides),
-		port:    flags.New("port", "Database port").Shorthand("p").Prefix(prefix).DocPrefix("db").Uint(fs, 5432, overrides),
-		name:    flags.New("name", "Database name").Shorthand("n").Prefix(prefix).DocPrefix("db").String(fs, "user", overrides),
-		timeout: flags.New("yimeout", "Request timeout").Prefix(prefix).DocPrefix("db").Duration(fs, time.Second, overrides),
+		url:     flags.New("url", "Database url").Shorthand("u").Prefix(prefix).DocPrefix("db").Flag(fs, "", overrides),
+		port:    flags.New("port", "Database port").Shorthand("p").Prefix(prefix).DocPrefix("db").Flag(fs, uint(5432), overrides),
+		name:    flags.New("name", "Database name").Shorthand("n").Prefix(prefix).DocPrefix("db").Flag(fs, "user", overrides),
+		timeout: flags.New("timeout", "Request timeout").Prefix(prefix).DocPrefix("db").Flag(fs, time.Second, overrides),
 	}
 }
 
@@ -30,14 +30,13 @@ func databaseFlags(fs *flag.FlagSet, prefix string, overrides ...flags.Override)
 //   -p,        --port            uint      [db] Database port ${MY_CLI_PORT} (default 5432)
 //   -replicaN, --replicaName     string    [replica] Database name ${MY_CLI_REPLICA_NAME} (default "user-replica")
 //   -replicaP, --replicaPort     uint      [replica] Database port ${MY_CLI_REPLICA_PORT} (default 5432)
+//              --replicaTimeout  duration  [replica] Request timeout ${MY_CLI_REPLICA_TIMEOUT} (default 1s)
 //   -replicaU, --replicaUrl      string    [replica] Database url ${MY_CLI_REPLICA_URL}
-//              --replicaYimeout  duration  [replica] Request timeout ${MY_CLI_REPLICA_YIMEOUT} (default 1s)
+//              --timeout         duration  [db] Request timeout ${MY_CLI_TIMEOUT} (default 1s)
 //   -u,        --url             string    [db] Database url ${MY_CLI_URL}
-//              --yimeout         duration  [db] Request timeout ${MY_CLI_YIMEOUT} (default 1s)
 
 func main() {
 	flagSet := flag.NewFlagSet("my-cli", flag.ExitOnError)
-	flagSet.Usage = flags.Usage(flagSet)
 
 	mainConfig := databaseFlags(flagSet, "")
 	replicaConfig := databaseFlags(flagSet, "replica", flags.NewOverride("Name", "user-replica"))
@@ -48,5 +47,5 @@ func main() {
 
 	fmt.Printf("Main name=`%s`\n", *mainConfig.name)
 	fmt.Printf("Replica name=`%s`\n", *replicaConfig.name)
-	fmt.Printf("Timeout name=`%s`\n", *replicaConfig.timeout)
+	fmt.Printf("Replica timeout=`%s`\n", *replicaConfig.timeout)
 }

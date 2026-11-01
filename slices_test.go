@@ -89,7 +89,7 @@ func TestStringSlice(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.StringSlice(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -179,7 +179,7 @@ func TestFloat64Slice(t *testing.T) {
 				testCase.preTest(t)
 			}
 
-			got := testCase.builder.Float64Slice(flagSet, testCase.args.defaultValue, testCase.args.overrides)
+			got := testCase.builder.Flag(flagSet, testCase.args.defaultValue, testCase.args.overrides)
 			flagSet.Usage()
 
 			assert.NoError(t, flagSet.Parse(testCase.args.args))
@@ -195,14 +195,14 @@ func TestStringSliceKeepsCallerDefaultIntact(t *testing.T) {
 	defaults := []string{"a", "b", "c"}
 
 	firstSet := flag.NewFlagSet("First", flag.ContinueOnError)
-	first := flags.New("tags", "Tags").StringSlice(firstSet, defaults, nil)
+	first := flags.New("tags", "Tags").Flag(firstSet, defaults, nil)
 
 	assert.NoError(t, firstSet.Parse([]string{"--tags", "z"}))
 	assert.Equal(t, []string{"z"}, *first)
 	assert.Equal(t, []string{"a", "b", "c"}, defaults, "caller's slice must not be modified")
 
 	secondSet := flag.NewFlagSet("Second", flag.ContinueOnError)
-	second := flags.New("tags", "Tags").StringSlice(secondSet, defaults, nil)
+	second := flags.New("tags", "Tags").Flag(secondSet, defaults, nil)
 
 	assert.NoError(t, secondSet.Parse(nil))
 	assert.Equal(t, []string{"a", "b", "c"}, *second, "a second FlagSet must still see the original default")
@@ -214,14 +214,14 @@ func TestFloat64SliceKeepsCallerDefaultIntact(t *testing.T) {
 	defaults := []float64{1, 2, 3}
 
 	firstSet := flag.NewFlagSet("First", flag.ContinueOnError)
-	first := flags.New("coords", "Coords").Float64Slice(firstSet, defaults, nil)
+	first := flags.New("coords", "Coords").Flag(firstSet, defaults, nil)
 
 	assert.NoError(t, firstSet.Parse([]string{"--coords", "9"}))
 	assert.Equal(t, []float64{9}, *first)
 	assert.Equal(t, []float64{1, 2, 3}, defaults, "caller's slice must not be modified")
 
 	secondSet := flag.NewFlagSet("Second", flag.ContinueOnError)
-	second := flags.New("coords", "Coords").Float64Slice(secondSet, defaults, nil)
+	second := flags.New("coords", "Coords").Flag(secondSet, defaults, nil)
 
 	assert.NoError(t, secondSet.Parse(nil))
 	assert.Equal(t, []float64{1, 2, 3}, *second, "a second FlagSet must still see the original default")
@@ -233,7 +233,7 @@ func TestFloat64SliceInvalidValueKeepsDefault(t *testing.T) {
 	flagSet := flag.NewFlagSet("Float64Slice", flag.ContinueOnError)
 	flagSet.SetOutput(&strings.Builder{})
 
-	got := flags.New("coords", "Coords").Float64Slice(flagSet, []float64{1, 2}, nil)
+	got := flags.New("coords", "Coords").Flag(flagSet, []float64{1, 2}, nil)
 
 	assert.Error(t, flagSet.Parse([]string{"--coords", "abc"}))
 	assert.Equal(t, []float64{1, 2}, *got)

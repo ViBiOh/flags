@@ -2,6 +2,7 @@ package flags
 
 import (
 	"flag"
+	"fmt"
 	"time"
 )
 
@@ -53,82 +54,43 @@ func (b Builder) EnvSeparator(envSeparator string) Builder {
 	return b
 }
 
-func (b Builder) String(fs *flag.FlagSet, value string, overrides []Override) *string {
-	return String(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+type flagType interface {
+	string | int | int64 | uint | uint64 | float64 | bool | time.Duration | []string | []float64
 }
 
-func (b Builder) Int(fs *flag.FlagSet, value int, overrides []Override) *int {
-	return Int(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
+// Flag declares a flag of the type of value and returns its pointer. An untyped constant gives int or float64: use an explicit conversion (uint(8080)) or an instantiation (Flag[uint]) for other types.
+func (b Builder) Flag[T flagType](fs *flag.FlagSet, value T, overrides []Override) *T {
+	output := new(T)
+
+	b.FlagVar(fs, output, value, overrides)
+
+	return output
 }
 
-func (b Builder) Int64(fs *flag.FlagSet, value int64, overrides []Override) *int64 {
-	return Int64(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) Uint(fs *flag.FlagSet, value uint, overrides []Override) *uint {
-	return Uint(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) Uint64(fs *flag.FlagSet, value uint64, overrides []Override) *uint64 {
-	return Uint64(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) Float64(fs *flag.FlagSet, value float64, overrides []Override) *float64 {
-	return Float64(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) Float64Slice(fs *flag.FlagSet, value []float64, overrides []Override) *[]float64 {
-	return Float64Slice(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, value, overrides)
-}
-
-func (b Builder) Bool(fs *flag.FlagSet, value bool, overrides []Override) *bool {
-	return Bool(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) Duration(fs *flag.FlagSet, value time.Duration, overrides []Override) *time.Duration {
-	return Duration(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) StringSlice(fs *flag.FlagSet, value []string, overrides []Override) *[]string {
-	return StringSlice(fs, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, value, overrides)
-}
-
-func (b Builder) StringVar(fs *flag.FlagSet, output *string, value string, overrides []Override) {
-	StringVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) IntVar(fs *flag.FlagSet, output *int, value int, overrides []Override) {
-	IntVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) Int64Var(fs *flag.FlagSet, output *int64, value int64, overrides []Override) {
-	Int64Var(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) UintVar(fs *flag.FlagSet, output *uint, value uint, overrides []Override) {
-	UintVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) Uint64Var(fs *flag.FlagSet, output *uint64, value uint64, overrides []Override) {
-	Uint64Var(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) Float64Var(fs *flag.FlagSet, output *float64, value float64, overrides []Override) {
-	Float64Var(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) BoolVar(fs *flag.FlagSet, output *bool, value bool, overrides []Override) {
-	BoolVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) DurationVar(fs *flag.FlagSet, output *time.Duration, value time.Duration, overrides []Override) {
-	DurationVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, value, overrides)
-}
-
-func (b Builder) StringSliceVar(fs *flag.FlagSet, output *[]string, value []string, overrides []Override) {
-	StringSliceVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, value, overrides)
-}
-
-func (b Builder) Float64SliceVar(fs *flag.FlagSet, output *[]float64, value []float64, overrides []Override) {
-	Float64SliceVar(fs, output, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, value, overrides)
+// FlagVar declares a flag of the type of value and binds it to output. See Flag for the typing of constants.
+func (b Builder) FlagVar[T flagType](fs *flag.FlagSet, output *T, value T, overrides []Override) {
+	switch typed := any(output).(type) {
+	case *string:
+		StringVar(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, any(value).(string), overrides)
+	case *int:
+		IntVar(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, any(value).(int), overrides)
+	case *int64:
+		Int64Var(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, any(value).(int64), overrides)
+	case *uint:
+		UintVar(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, any(value).(uint), overrides)
+	case *uint64:
+		Uint64Var(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, any(value).(uint64), overrides)
+	case *float64:
+		Float64Var(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, any(value).(float64), overrides)
+	case *bool:
+		BoolVar(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, any(value).(bool), overrides)
+	case *time.Duration:
+		DurationVar(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, any(value).(time.Duration), overrides)
+	case *[]string:
+		StringSliceVar(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, any(value).([]string), overrides)
+	case *[]float64:
+		Float64SliceVar(fs, typed, b.prefix, b.docPrefix, b.name, b.shorthand, b.label, b.env, b.envSeparator, any(value).([]float64), overrides)
+	default:
+		panic(fmt.Sprintf("unsupported flag type %T", output))
+	}
 }
