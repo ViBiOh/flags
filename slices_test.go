@@ -214,3 +214,13 @@ func TestFloat64SliceKeepsCallerDefaultIntact(t *testing.T) {
 	assert.NoError(t, secondSet.Parse(nil))
 	assert.Equal(t, []float64{1, 2, 3}, *second, "a second FlagSet must still see the original default")
 }
+
+func TestFloat64SliceInvalidValueKeepsDefault(t *testing.T) {
+	flagSet := flag.NewFlagSet("Float64Slice", flag.ContinueOnError)
+	flagSet.SetOutput(&strings.Builder{})
+
+	got := flags.New("coords", "Coords").Float64Slice(flagSet, []float64{1, 2}, nil)
+
+	assert.Error(t, flagSet.Parse([]string{"--coords", "abc"}))
+	assert.Equal(t, []float64{1, 2}, *got)
+}
