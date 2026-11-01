@@ -33,7 +33,7 @@ func Int(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env string
 
 func IntVar(fs *flag.FlagSet, output *int, prefix, docPrefix, name, shorthand, label, env string, value int, overrides []Override) {
 	bindScalar(fs, output, fs.IntVar, prefix, docPrefix, name, shorthand, label, env, value, overrides, func(input string) (int, error) {
-		intVal, err := strconv.ParseInt(input, 10, 32)
+		intVal, err := strconv.ParseInt(input, 10, strconv.IntSize)
 		return int(intVal), err
 	})
 }
@@ -62,7 +62,7 @@ func Uint(fs *flag.FlagSet, prefix, docPrefix, name, shorthand, label, env strin
 
 func UintVar(fs *flag.FlagSet, output *uint, prefix, docPrefix, name, shorthand, label, env string, value uint, overrides []Override) {
 	bindScalar(fs, output, fs.UintVar, prefix, docPrefix, name, shorthand, label, env, value, overrides, func(input string) (uint, error) {
-		intVal, err := strconv.ParseUint(input, 10, 32)
+		intVal, err := strconv.ParseUint(input, 10, strconv.IntSize)
 		return uint(intVal), err
 	})
 }

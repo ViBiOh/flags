@@ -4,6 +4,7 @@ import (
 	"flag"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -705,4 +706,42 @@ func TestBuilderFlagVar(t *testing.T) {
 	assert.Equal(t, 2*time.Second, timeout)
 	assert.Equal(t, []string{"x"}, tags)
 	assert.Equal(t, []float64{2.5}, coords)
+}
+
+func TestIntegerEnvironmentValueBeyond32Bits(t *testing.T) {
+	t.Parallel()
+
+	if strconv.IntSize < 64 {
+		t.Skip("int is 32 bits wide")
+	}
+
+	setenv(t, "WIDE_BIG_INT", "3000000000")
+	setenv(t, "WIDE_BIG_UINT", "3000000000")
+
+	flagSet := flag.NewFlagSet("Wide", flag.ContinueOnError)
+	flagSet.SetOutput(&strings.Builder{})
+
+	gotInt := flags.New("bigInt", "Big int").Flag(flagSet, 1, nil)
+	gotUint := flags.New("bigUint", "Big uint").Flag(flagSet, uint(1), nil)
+
+	assert.Equal(t, 3000000000, *gotInt)
+	assert.Equal(t, uint(3000000000), *gotUint)
+}
+
+func TestUsageKeepsUnrelatedFlagsApart(t *testing.T) {
+	t.Parallel()
+
+	var writer strings.Builder
+
+	flagSet := flag.NewFlagSet("Merge", flag.ContinueOnError)
+	flagSet.SetOutput(&writer)
+	flagSet.Usage = flags.Usage(flagSet)
+
+	flagSet.Bool("alpha", false, "")
+	flagSet.Bool("beta", false, "")
+	flags.New("name", "Name").Shorthand("n").Flag(flagSet, "", nil)
+
+	flagSet.Usage()
+
+	assert.Equal(t, "Usage of Merge:\n      --alpha           (default false)\n      --beta            (default false)\n  -n, --name   string  Name ${MERGE_NAME}\n", writer.String())
 }

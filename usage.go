@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"maps"
+	"reflect"
 	"slices"
 )
 
@@ -23,15 +24,33 @@ func (f *usageFlag) addName(name string) {
 	}
 }
 
+// valueKey identifies the variable a flag writes to. A shorthand and its long name are registered on the same variable, which is what groups them, whereas unrelated flags can share the same usage text.
+type valueKey struct {
+	kind    reflect.Type
+	name    string
+	address uintptr
+}
+
+func newValueKey(item *flag.Flag) valueKey {
+	value := reflect.ValueOf(item.Value)
+	if value.Kind() == reflect.Pointer {
+		return valueKey{kind: value.Type(), address: value.Pointer()}
+	}
+
+	return valueKey{name: item.Name}
+}
+
 func Usage(fs *flag.FlagSet) func() {
 	return func() {
-		flags := make(map[string]*usageFlag)
+		flags := make(map[valueKey]*usageFlag)
 
 		fs.VisitAll(func(f *flag.Flag) {
-			if exist, ok := flags[f.Usage]; ok {
+			key := newValueKey(f)
+
+			if exist, ok := flags[key]; ok {
 				exist.addName(f.Name)
 			} else {
-				flags[f.Usage] = &usageFlag{
+				flags[key] = &usageFlag{
 					name: f.Name,
 					flag: f,
 				}
