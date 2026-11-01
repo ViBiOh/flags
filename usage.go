@@ -8,13 +8,13 @@ import (
 	"slices"
 )
 
-type Flag struct {
+type usageFlag struct {
 	flag      *flag.Flag
 	name      string
 	shorthand string
 }
 
-func (f *Flag) AddName(name string) {
+func (f *usageFlag) addName(name string) {
 	if len(name) < len(f.flag.Name) {
 		f.shorthand = name
 	} else {
@@ -25,15 +25,13 @@ func (f *Flag) AddName(name string) {
 
 func Usage(fs *flag.FlagSet) func() {
 	return func() {
-		flags := make(map[string]*Flag)
+		flags := make(map[string]*usageFlag)
 
 		fs.VisitAll(func(f *flag.Flag) {
-			usageSha := Sha(f.Usage)
-
-			if exist, ok := flags[usageSha]; ok {
-				exist.AddName(f.Name)
+			if exist, ok := flags[f.Usage]; ok {
+				exist.addName(f.Name)
 			} else {
-				flags[usageSha] = &Flag{
+				flags[f.Usage] = &usageFlag{
 					name: f.Name,
 					flag: f,
 				}
@@ -54,7 +52,7 @@ func Usage(fs *flag.FlagSet) func() {
 			_, _ = fmt.Fprint(output, "Usage:\n")
 		}
 
-		items := slices.SortedFunc(maps.Values(flags), func(a, b *Flag) int {
+		items := slices.SortedFunc(maps.Values(flags), func(a, b *usageFlag) int {
 			return cmp.Compare(a.name, b.name)
 		})
 

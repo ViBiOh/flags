@@ -1,9 +1,6 @@
 package flags
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
-	"fmt"
 	"strings"
 	"unicode"
 )
@@ -31,7 +28,7 @@ func firstLowerCase(s string) string {
 	return changeFirstCase(s, false)
 }
 
-func SnakeCase(s string) string {
+func snakeCase(s string) string {
 	runes := []rune(s)
 
 	var builder strings.Builder
@@ -70,13 +67,4 @@ func isWordStart(runes []rune, index int) bool {
 	default:
 		return true
 	}
-}
-
-func Sha(content string) string {
-	hasher := sha256.New()
-
-	// no err check https://golang.org/pkg/hash/#Hash
-	_, _ = fmt.Fprint(hasher, content)
-
-	return hex.EncodeToString(hasher.Sum(nil))
 }

@@ -144,7 +144,7 @@ func getNameAndEnv(fs *flag.FlagSet, prefix, name, env string) (string, string) 
 	name = prefix + firstUpperCase(name)
 
 	if len(env) == 0 {
-		env = strings.ToUpper(SnakeCase(firstUpperCase(fs.Name()) + firstUpperCase(name)))
+		env = strings.ToUpper(snakeCase(firstUpperCase(fs.Name()) + firstUpperCase(name)))
 	}
 
 	return name, env

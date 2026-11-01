@@ -123,8 +123,8 @@ func TestSnakeCase(t *testing.T) {
 		t.Run(intention, func(t *testing.T) {
 			t.Parallel()
 
-			if result := SnakeCase(tc.input); result != tc.want {
-				t.Errorf("SnakeCase() = `%s`, want `%s`", result, tc.want)
+			if result := snakeCase(tc.input); result != tc.want {
+				t.Errorf("snakeCase() = `%s`, want `%s`", result, tc.want)
 			}
 		})
 	}
